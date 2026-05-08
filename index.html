@@ -27,7 +27,6 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 .star-field{position:absolute;inset:0;pointer-events:none}
 .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
 @keyframes twinkle{0%,100%{opacity:.1}50%{opacity:var(--op,.6);transform:scale(1.4)}}
-#fw-canvas{position:absolute;inset:0;pointer-events:none;z-index:1}
 .intro-center{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center}
 .intro-logo-wrap{position:relative;width:180px;height:180px;margin-bottom:12px}
 .intro-logo-ring{
@@ -346,7 +345,6 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 </style>
 </head>
 <body>
-<canvas id="fw-canvas"></canvas>
 <canvas id="confetti-canvas"></canvas>
 
 <!-- INTRO -->
@@ -357,7 +355,8 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
     <div class="intro-logo-wrap">
       <div class="intro-logo-ring">
         <div class="intro-logo-inner" id="intro-logo-inner">
-          <div class="logo-fallback-txt">RIZZ<br>LIVE</div>
+          <img id="intro-logo-img" src="./images/app_logo.png" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none';document.getElementById('intro-logo-fallback').style.display='flex'">
+          <div id="intro-logo-fallback" class="logo-fallback-txt" style="display:none">RIZZ<br>LIVE</div>
         </div>
       </div>
       <div class="orbit-particle"></div>
@@ -380,7 +379,8 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
   <div class="page-header">
     <div class="hdr-left">
       <div class="hdr-logo-wrap" id="hdr-logo-wrap">
-        <div class="hdr-logo-fallback">RIZZ<br>LIVE</div>
+        <img id="hdr-logo-img" src="./images/app_logo.png" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none';document.getElementById('hdr-logo-fallback').style.display='block'">
+        <div id="hdr-logo-fallback" class="hdr-logo-fallback" style="display:none">RIZZ<br>LIVE</div>
       </div>
       <div class="hdr-text-group">
         <div class="hdr-brand">RIZZ LIVE</div>
@@ -394,10 +394,7 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
       <div class="hdr-title-sub">India's #1 Platform</div>
     </div>
 
-    <div class="hdr-live">
-      <span class="live-dot"></span>
-      <span class="live-txt">LIVE</span>
-    </div>
+
   </div>
 
   <div id="sections-container">
@@ -426,48 +423,6 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
     s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;--delay:${(Math.random()*5).toFixed(1)}s;--op:${(Math.random()*.5+.3).toFixed(2)}`;
     sf.appendChild(s);
   }
-})();
-
-// FIREWORKS
-(function(){
-  const canvas=document.getElementById('fw-canvas'),ctx=canvas.getContext('2d');
-  let W,H;
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
-  resize();window.addEventListener('resize',resize);
-  const parts=[],rockets=[];
-  function rand(a,b){return Math.random()*(b-a)+a}
-  class Rocket{
-    constructor(){this.x=rand(W*.2,W*.8);this.y=H;this.vy=rand(-14,-10);this.vx=rand(-1.5,1.5);this.target=rand(H*.15,H*.45);this.hue=rand(0,360);this.done=false;this.trail=[]}
-    update(){
-      if(this.done)return false;
-      this.trail.push({x:this.x,y:this.y});if(this.trail.length>8)this.trail.shift();
-      this.x+=this.vx;this.y+=this.vy;this.vy+=.3;
-      if(this.y<=this.target||this.vy>=0){this.explode();return false}
-      return true;
-    }
-    explode(){
-      for(let i=0;i<rand(60,100)|0;i++){const a=rand(0,Math.PI*2),sp=rand(1.5,7);parts.push({x:this.x,y:this.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,hue:this.hue+rand(-20,20),life:1,r:rand(1.5,3),g:.12})}
-    }
-    draw(){
-      this.trail.forEach((t,i)=>{ctx.beginPath();ctx.arc(t.x,t.y,1.5*(i/this.trail.length),0,Math.PI*2);ctx.fillStyle=`hsla(${this.hue},90%,70%,${i/this.trail.length})`;ctx.fill()});
-      ctx.beginPath();ctx.arc(this.x,this.y,2,0,Math.PI*2);ctx.fillStyle=`hsl(${this.hue},90%,80%)`;ctx.fill();
-    }
-  }
-  let last=0;
-  function anim(){
-    ctx.fillStyle='rgba(3,2,10,.18)';ctx.fillRect(0,0,W,H);
-    const now=Date.now();
-    if(now-last>rand(300,700)){rockets.push(new Rocket());last=now}
-    for(let i=rockets.length-1;i>=0;i--){rockets[i].draw();if(!rockets[i].update())rockets.splice(i,1)}
-    for(let i=parts.length-1;i>=0;i--){
-      const p=parts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.97;p.life-=.014;
-      if(p.life<=0){parts.splice(i,1);continue}
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);
-      ctx.fillStyle=`hsla(${p.hue},90%,65%,${p.life})`;ctx.fill();
-    }
-    requestAnimationFrame(anim);
-  }
-  anim();
 })();
 
 // CONFETTI
