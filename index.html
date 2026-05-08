@@ -180,56 +180,66 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 .sec-line{width:80px;height:1px;margin:10px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4}
 
 /* TOP 3 ROW */
-.top3-row{display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:8px 10px 16px}
+.top3-row{
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:6px;padding:36px 6px 16px;
+}
 
 /* ═══ CARD ═══ */
 .top-card{
   display:flex;flex-direction:column;align-items:center;
-  border-radius:20px;padding:28px 8px 14px;
-  position:relative;flex:1;max-width:160px;
+  border-radius:16px;padding:14px 6px 12px;
+  position:relative;flex:1;
+  min-width:0;max-width:140px;
   animation:cardIn .6s ease both;
   transition:transform .3s ease;
   overflow:visible;
 }
-.top-card:hover{transform:translateY(-6px) scale(1.02)}
+.top-card:hover{transform:translateY(-4px) scale(1.01)}
 
 .top-card.rank1{
   background:linear-gradient(160deg,#0b1a2e 0%,#0d2545 40%,#071525 100%);
-  border:1px solid rgba(100,220,255,.45);min-height:300px;
+  border:1px solid rgba(100,220,255,.45);
   box-shadow:0 8px 40px rgba(100,220,255,.15),inset 0 1px 0 rgba(100,220,255,.15);
 }
 .top-card.rank2{
   background:linear-gradient(160deg,#0e0e22 0%,#181830 50%,#0e0e22 100%);
-  border:1px solid rgba(200,204,216,.2);min-height:270px;
+  border:1px solid rgba(200,204,216,.2);
   box-shadow:0 6px 24px rgba(200,204,216,.07),inset 0 1px 0 rgba(200,204,216,.07);
 }
 .top-card.rank3{
   background:linear-gradient(160deg,#120e0a 0%,#201408 50%,#120e0a 100%);
-  border:1px solid rgba(205,127,50,.25);min-height:270px;
+  border:1px solid rgba(205,127,50,.25);
   box-shadow:0 6px 24px rgba(205,127,50,.06),inset 0 1px 0 rgba(205,127,50,.06);
 }
 
+/* Crown — card ke andar top pe, absolute nahi — flow mein */
 .crown-ico{
-  position:absolute;top:-22px;left:50%;transform:translateX(-50%);
-  font-size:26px;filter:drop-shadow(0 0 12px rgba(100,220,255,.9));
-  animation:cFloat 2.5s ease-in-out infinite;z-index:10;
+  display:block;
+  font-size:22px;
+  margin-bottom:4px;
+  text-align:center;
+  filter:drop-shadow(0 0 10px rgba(100,220,255,.9));
+  animation:cFloat 2.5s ease-in-out infinite;
+  line-height:1;
 }
-@keyframes cFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-4deg)}50%{transform:translateX(-50%) translateY(-8px) rotate(4deg)}}
+@keyframes cFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-5px) rotate(4deg)}}
 
+/* Rank badge — card ke top-right corner pe */
 .rank-badge{
-  position:absolute;top:-10px;right:12px;
-  width:26px;height:26px;border-radius:50%;
+  position:absolute;top:8px;right:8px;
+  width:22px;height:22px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',sans-serif;font-size:13px;z-index:10;
+  font-family:'Bebas Neue',sans-serif;font-size:12px;z-index:10;
 }
 .rank1 .rank-badge{background:linear-gradient(135deg,#b9f2ff,#4dd8f0,#0090aa);color:#001a22;box-shadow:0 2px 12px rgba(77,216,240,.6)}
 .rank2 .rank-badge{background:linear-gradient(135deg,#eceff8,#b0b4c8,#7a7e8e);color:#0a0a1a;box-shadow:0 2px 8px rgba(180,184,210,.4)}
 .rank3 .rank-badge{background:linear-gradient(135deg,#e8a060,#b06830,#7a3e10);color:#fff8f0;box-shadow:0 2px 8px rgba(180,100,40,.4)}
 
 /* DP — FIXED: no hue-rotate on the ring so logo colors stay real */
-.dp-wrap{position:relative;margin:6px auto 0;flex-shrink:0}
-.dp-wrap.big{width:88px;height:88px}
-.dp-wrap.sm{width:72px;height:72px}
+.dp-wrap{position:relative;margin:2px auto 0;flex-shrink:0}
+.dp-wrap.big{width:76px;height:76px}
+.dp-wrap.sm{width:62px;height:62px}
 .dp-img-circle{
   width:100%;height:100%;border-radius:50%;overflow:hidden;
   background:linear-gradient(135deg,#2a1a4a,#1a1830);
@@ -337,10 +347,22 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 .bg-glow2{width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,53,.03) 0%,transparent 70%);bottom:100px;left:-100px;animation:bgF 14s ease-in-out infinite 2s}
 @keyframes bgF{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-30px)}}
 
-@media(max-width:360px){
+@media(max-width:400px){
+  .top3-row{gap:4px;padding:30px 4px 14px}
+  .top-card{padding:12px 4px 10px;border-radius:14px}
+  .dp-wrap.big{width:68px;height:68px}
+  .dp-wrap.sm{width:56px;height:56px}
+  .crown-ico{font-size:18px}
+  .card-name{font-size:9.5px;max-width:110px}
+  .rank1 .card-name{font-size:10.5px}
+  .tier-label{padding:3px 8px 3px 6px}
+  .tier-txt{font-size:7.5px;letter-spacing:1px}
+  .stat-chip{padding:5px 6px;gap:5px}
+  .chip-icon-wrap{width:22px;height:22px;border-radius:6px}
+  .stat-val{font-size:12px}
+  .rank1 .stat-val{font-size:13px}
+  .stat-label{font-size:6px}
   .honour-text{font-size:32px}
-  .top-card.rank1{min-height:280px}
-  .top-card.rank2,.top-card.rank3{min-height:255px}
 }
 </style>
 </head>
@@ -618,10 +640,20 @@ function renderSections(data){
 // LOGO
 function applyLogo(src){
   if(!src) return;
-  const il = document.getElementById('intro-logo-inner');
-  if(il) il.innerHTML = `<img src="${src}" alt="logo" onerror="this.outerHTML='<div class=logo-fallback-txt>RIZZ<br>LIVE</div>'">`;
-  const hl = document.getElementById('hdr-logo-wrap');
-  if(hl) hl.innerHTML = `<img src="${src}" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.outerHTML='<div class=hdr-logo-fallback>RIZZ<br>LIVE</div>'">`;
+  // Intro logo
+  const iImg = document.getElementById('intro-logo-img');
+  if(iImg){ iImg.src = src; }
+  else {
+    const il = document.getElementById('intro-logo-inner');
+    if(il) il.innerHTML = `<img src="${src}" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'">`;
+  }
+  // Header logo
+  const hImg = document.getElementById('hdr-logo-img');
+  if(hImg){ hImg.src = src; }
+  else {
+    const hl = document.getElementById('hdr-logo-wrap');
+    if(hl) hl.innerHTML = `<img src="${src}" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'">`;
+  }
 }
 
 // LOAD DATA
@@ -651,11 +683,8 @@ function enterMain(){
 }
 setTimeout(enterMain, 3200);
 
-// PRELOAD
+// PRELOAD — agar rizz-data.json mein custom logo ho toh update karo
 (function(){
-  const img = new Image();
-  img.onload = () => applyLogo(img.src);
-  img.src = './images/app_logo.png';
   fetch('./rizz-data.json?v=' + Date.now())
     .then(r => r.ok ? r.json() : null)
     .then(d => { if(d && d.logo) applyLogo(d.logo); })
