@@ -35,19 +35,32 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 #admin-screen{display:none}
 .top-bar{background:linear-gradient(90deg,#0f0f25,#1a0a3e,#0f0f25);
   border-bottom:1px solid var(--border);padding:12px 20px;
-  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;
+  flex-wrap:wrap;gap:8px}
 .top-bar-brand{font-family:'Orbitron',sans-serif;font-size:15px;color:var(--orange);font-weight:900}
-.top-bar-right{display:flex;gap:10px;align-items:center}
-.btn-sm{padding:7px 16px;border-radius:8px;border:none;font-size:12px;font-weight:700;
+.top-bar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn-sm{padding:7px 14px;border-radius:8px;border:none;font-size:12px;font-weight:700;
   cursor:pointer;font-family:'Poppins',sans-serif;letter-spacing:.5px;transition:.2s}
 .btn-save{background:linear-gradient(135deg,#ff6b35,#ff4d80);color:#fff}
 .btn-export{background:#ffffff12;color:#fff;border:1px solid var(--border)}
 .btn-logout{background:#ff4d8022;color:#ff4d80;border:1px solid #ff4d8044}
+.btn-import{background:#00e5ff22;color:#00e5ff;border:1px solid #00e5ff44}
 .btn-sm:hover{filter:brightness(1.2);transform:translateY(-1px)}
+
+/* SIZE METER */
+.size-bar-wrap{
+  background:#0a0a20;border:1px solid var(--border);border-radius:10px;
+  padding:8px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;
+}
+.size-bar-bg{flex:1;height:8px;background:#ffffff10;border-radius:4px;overflow:hidden}
+.size-bar-fill{height:100%;border-radius:4px;transition:width .5s,background .5s}
+.size-label{font-size:11px;font-weight:700;white-space:nowrap;min-width:80px;text-align:right}
+.size-ok{color:#00e5ff}.size-warn{color:#ffd700}.size-bad{color:#ff4d80}
 
 .admin-body{max-width:900px;margin:0 auto;padding:20px 16px 60px}
 .admin-notice{background:#ff6b3515;border:1px solid #ff6b3540;border-radius:10px;
-  padding:10px 16px;font-size:12px;color:#ffb347;margin-bottom:20px;line-height:1.6}
+  padding:10px 16px;font-size:12px;color:#ffb347;margin-bottom:16px;line-height:1.7}
+.admin-notice code{background:#ffffff15;padding:1px 5px;border-radius:4px;color:#fff}
 
 /* TABS */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
@@ -72,19 +85,26 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 
 /* UPLOAD AREA */
 .upload-zone{border:1.5px dashed #ffffff20;border-radius:10px;padding:12px;
-  text-align:center;cursor:pointer;transition:.2s;position:relative;overflow:hidden;margin-bottom:10px}
+  text-align:center;cursor:pointer;transition:.2s;position:relative;overflow:hidden;margin-bottom:6px}
 .upload-zone:hover{border-color:var(--orange);background:#ff6b3508}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-zone-preview{width:60px;height:60px;border-radius:50%;object-fit:cover;
+.upload-zone-preview{width:64px;height:64px;border-radius:50%;object-fit:cover;
   border:2px solid var(--orange);margin:0 auto 6px;display:none}
 .upload-zone-label{font-size:10px;color:var(--muted)}
 .upload-zone-icon{font-size:22px;margin-bottom:4px}
+.img-size-tag{font-size:9px;color:#00e5ff;margin-top:3px;font-weight:600}
+
+/* CLEAR BTN */
+.clear-btn{width:100%;background:#ff4d8015;border:1px solid #ff4d8030;border-radius:6px;
+  color:#ff4d80;font-size:10px;font-weight:600;padding:4px;cursor:pointer;margin-bottom:8px;
+  font-family:'Poppins',sans-serif;transition:.2s}
+.clear-btn:hover{background:#ff4d8025}
 
 .frame-zone{border:1.5px dashed #ffffff20;border-radius:10px;padding:10px;
   text-align:center;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
 .frame-zone:hover{border-color:var(--cyan)}
 .frame-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.frame-zone-preview{width:60px;height:60px;object-fit:contain;margin:0 auto 4px;display:none}
+.frame-zone-preview{width:64px;height:64px;object-fit:contain;margin:0 auto 4px;display:none}
 
 .field-label{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;margin-bottom:4px;margin-top:8px}
 .field-input{width:100%;background:#080818;border:1px solid #ffffff18;border-radius:8px;
@@ -94,17 +114,23 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 /* APP LOGO SECTION */
 .logo-section{background:var(--card);border:1px solid var(--border);border-radius:14px;
   padding:20px;margin-bottom:18px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.logo-preview-wrap{position:relative}
 .logo-preview-img{width:80px;height:80px;border-radius:50%;object-fit:cover;
   border:2px solid var(--orange);display:block}
 .logo-change-btn{position:relative;overflow:hidden;margin-top:8px;display:inline-block}
 .logo-change-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 
-/* SAVED TOAST */
+/* COMPRESS BADGE */
+.compress-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:#00e5ff15;border:1px solid #00e5ff40;border-radius:8px;
+  color:#00e5ff;font-size:10px;font-weight:700;padding:4px 10px;margin-top:6px;
+}
+
+/* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
   background:#ff6b35;color:#fff;padding:10px 24px;border-radius:20px;
   font-size:13px;font-weight:700;letter-spacing:1px;opacity:0;
-  transition:opacity .3s;pointer-events:none;z-index:999}
+  transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 #toast.show{opacity:1}
 
 /* EXPORT MODAL */
@@ -112,13 +138,39 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
   z-index:200;align-items:center;justify-content:center}
 #export-modal.open{display:flex}
 .export-box{background:#12122a;border:1px solid var(--orange);border-radius:16px;
-  padding:24px;width:90%;max-width:520px;max-height:80vh;overflow-y:auto}
+  padding:24px;width:90%;max-width:540px;max-height:85vh;overflow-y:auto}
 .export-box h3{font-family:'Orbitron',sans-serif;color:var(--orange);font-size:14px;margin-bottom:12px}
 .export-box textarea{width:100%;background:#080818;border:1px solid #ffffff22;border-radius:8px;
-  color:#aaffaa;font-size:11px;font-family:monospace;padding:12px;min-height:200px;resize:vertical}
+  color:#aaffaa;font-size:11px;font-family:monospace;padding:12px;min-height:160px;resize:vertical}
 .export-instructions{font-size:11px;color:#ffb347;line-height:1.7;margin-top:12px;
   background:#ff6b3510;border-radius:8px;padding:10px 14px;border:1px solid #ff6b3530}
 .export-instructions code{background:#ffffff15;padding:1px 5px;border-radius:4px;color:#fff}
+.export-size-info{background:#00e5ff10;border:1px solid #00e5ff30;border-radius:8px;
+  padding:10px 14px;margin-bottom:12px;font-size:12px;color:#00e5ff}
+
+/* IMPORT MODAL */
+#import-modal{display:none;position:fixed;inset:0;background:#000000bb;
+  z-index:200;align-items:center;justify-content:center}
+#import-modal.open{display:flex}
+.import-box{background:#12122a;border:1px solid #00e5ff;border-radius:16px;
+  padding:24px;width:90%;max-width:500px}
+.import-box h3{font-family:'Orbitron',sans-serif;color:#00e5ff;font-size:14px;margin-bottom:12px}
+.import-drop{border:2px dashed #00e5ff40;border-radius:12px;padding:30px;text-align:center;
+  cursor:pointer;position:relative;transition:.2s}
+.import-drop:hover{border-color:#00e5ff;background:#00e5ff08}
+.import-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.import-status{font-size:12px;color:#00e5ff;margin-top:10px;min-height:18px;text-align:center}
+
+/* PROGRESS OVERLAY */
+#progress-overlay{display:none;position:fixed;inset:0;background:#000000cc;
+  z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#progress-overlay.show{display:flex}
+.progress-box{background:#12122a;border:1px solid var(--orange);border-radius:16px;
+  padding:30px 40px;text-align:center}
+.progress-title{font-family:'Orbitron',sans-serif;color:var(--orange);font-size:13px;margin-bottom:16px}
+.progress-bar-bg{width:240px;height:8px;background:#ffffff10;border-radius:4px;overflow:hidden;margin:0 auto 10px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#ff6b35,#ff4d80);border-radius:4px;transition:width .2s}
+.progress-text{font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -131,7 +183,7 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
     <input type="password" id="pw-input" placeholder="Password daalo..." onkeydown="if(event.key==='Enter')doLogin()">
     <button class="btn-login" onclick="doLogin()">LOGIN →</button>
     <div class="login-err" id="login-err"></div>
-    <div style="margin-top:14px;font-size:10px;color:#444">Default password: <code style="color:#666">rizz2024</code></div>
+    <div style="margin-top:14px;font-size:10px;color:#444">Default: <code style="color:#666">rizz2024</code></div>
   </div>
 </div>
 
@@ -140,6 +192,7 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
   <div class="top-bar">
     <div class="top-bar-brand">⚡ RIZZ LIVE ADMIN</div>
     <div class="top-bar-right">
+      <button class="btn-sm btn-import" onclick="openImport()">📥 IMPORT JSON</button>
       <button class="btn-sm btn-save" onclick="saveAll()">💾 SAVE</button>
       <button class="btn-sm btn-export" onclick="openExport()">📤 EXPORT JSON</button>
       <button class="btn-sm btn-logout" onclick="doLogout()">LOGOUT</button>
@@ -147,22 +200,33 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
   </div>
 
   <div class="admin-body">
+    <!-- SIZE METER -->
+    <div class="size-bar-wrap">
+      <span style="font-size:11px;color:var(--muted);white-space:nowrap">JSON Size:</span>
+      <div class="size-bar-bg"><div class="size-bar-fill" id="size-fill" style="width:0%"></div></div>
+      <span class="size-label size-ok" id="size-label">0 MB / 25 MB</span>
+    </div>
+
     <div class="admin-notice">
-      ℹ️ <strong>Kaise kaam karta hai:</strong> Yahan data bharo → <strong>SAVE</strong> dabao → <strong>EXPORT JSON</strong> se <code>rizz-data.json</code> download karo → usse apne GitHub repo mein upload karo. Index.html automatically woh file read karega.
+      ℹ️ <strong>Auto-Compress ON:</strong> Saari images automatically compress hoti hain (200×200px, 70% quality) — JSON file chhoti rahegi.<br>
+      📋 <strong>Flow:</strong> Data bharo → <strong>SAVE</strong> → <strong>EXPORT JSON</strong> → <code>rizz-data.json</code> GitHub mein upload karo.
     </div>
 
     <!-- APP LOGO -->
     <div class="logo-section">
-      <div class="logo-preview-wrap">
-        <img id="logo-preview" class="logo-preview-img" src="" onerror="this.src=''" alt="Logo">
+      <div>
+        <img id="logo-preview" class="logo-preview-img" src="" style="display:none" alt="Logo">
+        <div id="logo-placeholder" style="width:80px;height:80px;border-radius:50%;background:#1a0a3e;border:2px dashed var(--orange);display:flex;align-items:center;justify-content:center;font-size:24px">🏷️</div>
       </div>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px">App Logo</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Intro aur header mein dikhega</div>
-        <label class="logo-change-btn btn-sm btn-export" style="cursor:pointer;display:inline-block;padding:7px 16px">
-          📁 Logo Change Karo
+        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">App Logo</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Intro aur header mein dikhega</div>
+        <div class="compress-badge">⚡ Auto-compress: 200×200, 80% quality</div><br>
+        <label class="logo-change-btn btn-sm btn-export" style="cursor:pointer;display:inline-block;padding:7px 16px;margin-top:6px">
+          📁 Logo Upload Karo
           <input type="file" accept="image/*" onchange="handleLogoUpload(this)">
         </label>
+        <span id="logo-size-tag" class="img-size-tag" style="display:block;margin-top:4px"></span>
       </div>
     </div>
 
@@ -175,13 +239,23 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 </div>
 
 <!-- TOAST -->
-<div id="toast">✅ SAVED!</div>
+<div id="toast">✅ Saved!</div>
+
+<!-- PROGRESS OVERLAY -->
+<div id="progress-overlay">
+  <div class="progress-box">
+    <div class="progress-title">⚡ PROCESSING...</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-text" id="progress-text">Please wait...</div>
+  </div>
+</div>
 
 <!-- EXPORT MODAL -->
 <div id="export-modal">
   <div class="export-box">
     <h3>📤 EXPORT — rizz-data.json</h3>
-    <textarea id="export-ta" readonly></textarea>
+    <div class="export-size-info" id="export-size-info">Calculating...</div>
+    <textarea id="export-ta" readonly placeholder="JSON yahan aayega..."></textarea>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
       <button class="btn-sm btn-save" onclick="downloadJSON()">⬇️ Download rizz-data.json</button>
       <button class="btn-sm btn-export" onclick="copyJSON()">📋 Copy</button>
@@ -189,18 +263,143 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
     </div>
     <div class="export-instructions">
       <strong>📋 GitHub Par Upload Karo:</strong><br>
-      1. Upar se <code>rizz-data.json</code> download karo<br>
+      1. <code>rizz-data.json</code> download karo<br>
       2. GitHub repo mein <code>index.html</code> ke saath same folder mein upload karo<br>
-      3. Commit karo — changes automatically live ho jayenge!<br><br>
-      <strong>Images ke liye:</strong> Repo mein <code>images/</code> folder banao aur saari images wahan rakho.
+      3. Commit karo — changes live ho jayenge!
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div id="import-modal">
+  <div class="import-box">
+    <h3>📥 IMPORT — rizz-data.json</h3>
+    <div class="import-drop">
+      <input type="file" accept=".json,application/json" onchange="handleImport(this)">
+      <div style="font-size:28px;margin-bottom:8px">📂</div>
+      <div style="font-size:13px;color:#fff;margin-bottom:4px">JSON file yahan drop karo</div>
+      <div style="font-size:11px;color:var(--muted)">ya click karke select karo</div>
+    </div>
+    <div class="import-status" id="import-status"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn-sm btn-logout" onclick="closeImport()" style="flex:1">✕ Close</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── PASSWORD ─────────────────────────────────────────────────────────
-const ADMIN_PASS = 'rizz2024'; // Yahan apna password badlo
+// ══════════════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════════════
+const ADMIN_PASS = 'rizz2024';
 
+// Image compression settings
+const IMG_MAX_SIZE  = 220;   // px — DP & logo max dimension
+const IMG_QUALITY   = 0.70;  // 70% JPEG quality
+const FRAME_MAX     = 300;   // px — frame images slightly bigger
+const FRAME_QUALITY = 0.75;
+
+const SECTIONS = [
+  { key:'agency',     emoji:'🏆', title:'Top 3 Agency',          week:'Week 1st',               statLabel:'Ruby Target',    statType:'ruby' },
+  { key:'host',       emoji:'🎤', title:'Top 3 Host',             week:'Week 1st',               statLabel:'Ruby Target',    statType:'ruby' },
+  { key:'recharger',  emoji:'💰', title:'Top 3 Recharger',        week:'Week 1st',               statLabel:'Weekly Recharge',statType:'coin' },
+  { key:'gifter',     emoji:'🎁', title:'Top 3 Gifter',           week:'Week 1st',               statLabel:'Ruby',           statType:'ruby' },
+  { key:'activehost', emoji:'🔴', title:'Top 3 Active Host',      week:'Sabse Zyada Live Time',  statLabel:'Live Time',      statType:'clock' },
+  { key:'newagency',  emoji:'🌟', title:'New Top 3 Agency',       week:'Naye Agency — Week 1st', statLabel:'Ruby Target',    statType:'ruby' },
+  { key:'agencytime', emoji:'⏱', title:'Top 3 Agency App Time',  week:'Sabse Zyada App Par Samay', statLabel:'App Time',   statType:'clock' },
+];
+const RANKS = [1,2,3];
+const RANK_LABEL = {1:'🥇 GOLD',2:'🥈 SILVER',3:'🥉 BRONZE'};
+
+// ══════════════════════════════════════════════════
+//  IMAGE COMPRESSION
+// ══════════════════════════════════════════════════
+function compressImage(file, maxPx, quality){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = e => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let w = img.width, h = img.height;
+        if(w > h){ if(w > maxPx){ h = Math.round(h*maxPx/w); w = maxPx; } }
+        else      { if(h > maxPx){ w = Math.round(w*maxPx/h); h = maxPx; } }
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressed);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function b64SizeKB(b64str){
+  if(!b64str) return 0;
+  return Math.round((b64str.length * 3/4) / 1024);
+}
+
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+let state = {};
+
+function defaultState(){
+  const s = { logo:'', sections:{} };
+  SECTIONS.forEach(sec => {
+    s.sections[sec.key] = { week: sec.week, ranks:{} };
+    RANKS.forEach(r => { s.sections[sec.key].ranks[r] = { name:'', stat:'', dp:'', frame:'' }; });
+  });
+  return s;
+}
+
+function loadState(){
+  try {
+    const raw = localStorage.getItem('rizz_admin_v2');
+    if(raw) state = JSON.parse(raw);
+    else state = defaultState();
+  } catch(e){ state = defaultState(); }
+}
+
+function saveState(){
+  try { localStorage.setItem('rizz_admin_v2', JSON.stringify(state)); }
+  catch(e){ showToast('⚠️ Browser storage full! Export JSON abhi.'); }
+}
+
+function getJSONString(){ return JSON.stringify(state, null, 2); }
+
+// ══════════════════════════════════════════════════
+//  SIZE METER
+// ══════════════════════════════════════════════════
+function updateSizeMeter(){
+  const bytes = new Blob([getJSONString()]).size;
+  const mb = bytes / 1024 / 1024;
+  const maxMb = 24; // keep buffer below 25MB GitHub limit
+  const pct = Math.min(100, (mb / maxMb) * 100);
+
+  const fill  = document.getElementById('size-fill');
+  const label = document.getElementById('size-label');
+  if(!fill || !label) return;
+
+  fill.style.width = pct + '%';
+
+  let cls, col;
+  if(pct < 60)      { cls='size-ok';   col='#00e5ff'; }
+  else if(pct < 85) { cls='size-warn'; col='#ffd700'; }
+  else               { cls='size-bad';  col='#ff4d80'; }
+
+  fill.style.background = col;
+  label.className = 'size-label ' + cls;
+  label.textContent = mb.toFixed(1) + ' MB / 25 MB';
+}
+
+// ══════════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════════
 function doLogin(){
   const p = document.getElementById('pw-input').value;
   if(p === ADMIN_PASS){
@@ -208,7 +407,7 @@ function doLogin(){
     document.getElementById('admin-screen').style.display='block';
     initAdmin();
   } else {
-    document.getElementById('login-err').textContent = '❌ Galat password!';
+    document.getElementById('login-err').textContent='❌ Galat password!';
   }
 }
 function doLogout(){
@@ -217,58 +416,27 @@ function doLogout(){
   document.getElementById('pw-input').value='';
 }
 
-// ── DATA CONFIG ───────────────────────────────────────────────────────
-const SECTIONS = [
-  { key:'agency',     emoji:'🏆', title:'Top 3 Agency',          week:'Week 1st', statLabel:'Ruby Target',    statType:'ruby' },
-  { key:'host',       emoji:'🎤', title:'Top 3 Host',             week:'Week 1st', statLabel:'Ruby Target',    statType:'ruby' },
-  { key:'recharger',  emoji:'💰', title:'Top 3 Recharger',        week:'Week 1st', statLabel:'Weekly Recharge',statType:'coin' },
-  { key:'gifter',     emoji:'🎁', title:'Top 3 Gifter',           week:'Week 1st', statLabel:'Ruby',           statType:'ruby' },
-  { key:'activehost', emoji:'🔴', title:'Top 3 Active Host',      week:'Sabse Zyada Live Time', statLabel:'Most Active', statType:'clock' },
-  { key:'newagency',  emoji:'🌟', title:'New Top 3 Agency',       week:'Naye Agency — Week 1st', statLabel:'Ruby Target', statType:'ruby' },
-  { key:'agencytime', emoji:'⏱', title:'Top 3 Agency App Time',  week:'Sabse Zyada App Par Samay', statLabel:'Most Active', statType:'clock' },
-];
-const RANKS = [1,2,3];
-const RANK_LABEL = {1:'🥇 GOLD', 2:'🥈 SILVER', 3:'🥉 BRONZE'};
-
-// ── STATE ─────────────────────────────────────────────────────────────
-let state = {};
-
-function defaultState(){
-  const s = { logo:'', sections:{} };
-  SECTIONS.forEach(sec => {
-    s.sections[sec.key] = { week: sec.week, ranks:{} };
-    RANKS.forEach(r => {
-      s.sections[sec.key].ranks[r] = { name:'', stat:'', dp:'', frame:'' };
-    });
-  });
-  return s;
-}
-
-function loadState(){
-  try {
-    const raw = localStorage.getItem('rizz_admin_v1');
-    if(raw) state = JSON.parse(raw);
-    else state = defaultState();
-  } catch(e){ state = defaultState(); }
-}
-function saveState(){
-  localStorage.setItem('rizz_admin_v1', JSON.stringify(state));
-}
-
-// ── LOGO ──────────────────────────────────────────────────────────────
-function handleLogoUpload(inp){
+// ══════════════════════════════════════════════════
+//  LOGO
+// ══════════════════════════════════════════════════
+async function handleLogoUpload(inp){
   const file = inp.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    state.logo = e.target.result;
-    document.getElementById('logo-preview').src = state.logo;
-    saveState();
-    showToast('Logo saved!');
-  };
-  reader.readAsDataURL(file);
+  showProgress('Logo compress ho raha hai...', 30);
+  try {
+    const compressed = await compressImage(file, 300, 0.82);
+    state.logo = compressed;
+    const prev = document.getElementById('logo-preview');
+    const ph   = document.getElementById('logo-placeholder');
+    prev.src = compressed; prev.style.display='block'; ph.style.display='none';
+    document.getElementById('logo-size-tag').textContent = '✅ ' + b64SizeKB(compressed) + ' KB (compressed)';
+    saveState(); updateSizeMeter(); hideProgress();
+    showToast('Logo saved & compressed!');
+  } catch(e){ hideProgress(); showToast('❌ Logo error: ' + e.message); }
 }
 
-// ── TABS ──────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════════
 let activeTab = 0;
 function renderTabs(){
   const tabsEl = document.getElementById('tabs');
@@ -276,22 +444,27 @@ function renderTabs(){
   SECTIONS.forEach((sec,i) => {
     const b = document.createElement('button');
     b.className = 'tab-btn' + (i===activeTab?' active':'');
-    b.textContent = sec.emoji+' '+sec.title.replace('Top 3 ','');
+    b.textContent = sec.emoji + ' ' + sec.title.replace('Top 3 ','');
     b.onclick = () => { activeTab=i; renderTabs(); renderSections(); };
     tabsEl.appendChild(b);
   });
 }
 
-// ── SECTIONS ──────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  SECTIONS
+// ══════════════════════════════════════════════════
 function renderSections(){
   const area = document.getElementById('sections-area');
   area.innerHTML = '';
   const sec = SECTIONS[activeTab];
+  const secData = state.sections[sec.key] || { week: sec.week, ranks:{} };
+
   const card = document.createElement('div');
   card.className = 'sec-card visible';
-  card.innerHTML = `<div class="sec-title">${sec.emoji} ${sec.title}</div>
+  card.innerHTML = `
+    <div class="sec-title">${sec.emoji} ${sec.title}</div>
     <div class="field-label">WEEK / SUBTITLE</div>
-    <input class="field-input" id="week_${sec.key}" value="${escHtml(state.sections[sec.key]?.week||sec.week)}" 
+    <input class="field-input" id="week_${sec.key}" value="${escHtml(secData.week||sec.week)}"
       oninput="state.sections['${sec.key}'].week=this.value" placeholder="e.g. Week 1st">
     <div class="rank-grid" style="margin-top:16px" id="rankgrid_${sec.key}"></div>`;
   area.appendChild(card);
@@ -300,126 +473,296 @@ function renderSections(){
   RANKS.forEach(r => {
     const rb = document.createElement('div');
     rb.className = 'rank-block';
-    const labelClass = r===1?'rb-gold':r===2?'rb-silver':'rb-bronze';
-    const d = state.sections[sec.key]?.ranks[r] || {};
+    const labelCls = r===1?'rb-gold':r===2?'rb-silver':'rb-bronze';
+    const d = secData.ranks?.[r] || { name:'', stat:'', dp:'', frame:'' };
+    const dpKB    = d.dp    ? b64SizeKB(d.dp)    : 0;
+    const frameKB = d.frame ? b64SizeKB(d.frame) : 0;
+
     rb.innerHTML = `
-      <div class="rank-block-title ${labelClass}">${RANK_LABEL[r]}</div>
-      <div class="upload-zone" id="dpzone_${sec.key}_${r}" title="DP Upload">
+      <div class="rank-block-title ${labelCls}">${RANK_LABEL[r]}</div>
+
+      <div class="upload-zone" title="DP Upload">
         <input type="file" accept="image/*" onchange="handleDP(this,'${sec.key}',${r})">
-        <img class="upload-zone-preview" id="dp_preview_${sec.key}_${r}" src="${d.dp||''}">
-        <div class="upload-zone-icon" id="dp_icon_${sec.key}_${r}" ${d.dp?'style="display:none"':''}>👤</div>
-        <div class="upload-zone-label">DP Upload</div>
+        <img class="upload-zone-preview" id="dp_prev_${sec.key}_${r}" src="${d.dp||''}">
+        <div id="dp_icon_${sec.key}_${r}" ${d.dp?'style="display:none"':''}>
+          <div class="upload-zone-icon">👤</div>
+          <div class="upload-zone-label">DP Upload (auto-compress)</div>
+        </div>
+        <div class="img-size-tag" id="dp_size_${sec.key}_${r}">${d.dp?'✅ '+dpKB+' KB':''}</div>
       </div>
-      <div class="frame-zone" id="frzone_${sec.key}_${r}" title="Avatar Frame">
+      ${d.dp ? `<button class="clear-btn" onclick="clearDP('${sec.key}',${r})">✕ DP Remove</button>` : ''}
+
+      <div class="frame-zone" title="Avatar Frame">
         <input type="file" accept="image/*" onchange="handleFrame(this,'${sec.key}',${r})">
-        <img class="frame-zone-preview" id="fr_preview_${sec.key}_${r}" src="${d.frame||''}">
-        <div class="upload-zone-icon" id="fr_icon_${sec.key}_${r}" ${d.frame?'style="display:none"':''}>🖼</div>
-        <div class="upload-zone-label" style="font-size:10px;color:var(--cyan)">Avatar Frame</div>
+        <img class="frame-zone-preview" id="fr_prev_${sec.key}_${r}" src="${d.frame||''}">
+        <div id="fr_icon_${sec.key}_${r}" ${d.frame?'style="display:none"':''}>
+          <div class="upload-zone-icon">🖼</div>
+          <div class="upload-zone-label" style="color:var(--cyan)">Avatar Frame (optional)</div>
+        </div>
+        <div class="img-size-tag" id="fr_size_${sec.key}_${r}">${d.frame?'✅ '+frameKB+' KB':''}</div>
       </div>
+      ${d.frame ? `<button class="clear-btn" onclick="clearFrame('${sec.key}',${r})" style="margin-top:4px">✕ Frame Remove</button>` : ''}
+
       <div class="field-label">NAME</div>
-      <input class="field-input" id="name_${sec.key}_${r}" value="${escHtml(d.name||'')}" 
+      <input class="field-input" id="name_${sec.key}_${r}" value="${escHtml(d.name||'')}"
         oninput="state.sections['${sec.key}'].ranks[${r}].name=this.value"
         placeholder="Name daalo...">
+
       <div class="field-label">${sec.statLabel}</div>
-      <input class="field-input" id="stat_${sec.key}_${r}" value="${escHtml(d.stat||'')}" 
+      <input class="field-input" id="stat_${sec.key}_${r}" value="${escHtml(d.stat||'')}"
         oninput="state.sections['${sec.key}'].ranks[${r}].stat=this.value"
         placeholder="${sec.statType==='clock'?'e.g. 120 hrs':'e.g. 1,23,456'}">`;
+
     grid.appendChild(rb);
 
-    // Show existing previews
+    // Show previews
     if(d.dp){
-      const prev = document.getElementById('dp_preview_'+sec.key+'_'+r);
-      if(prev){ prev.style.display='block'; }
+      const p = document.getElementById('dp_prev_'+sec.key+'_'+r);
+      if(p) p.style.display='block';
     }
     if(d.frame){
-      const prev = document.getElementById('fr_preview_'+sec.key+'_'+r);
-      if(prev){ prev.style.display='block'; }
+      const p = document.getElementById('fr_prev_'+sec.key+'_'+r);
+      if(p) p.style.display='block';
     }
   });
 }
 
-function handleDP(inp, key, r){
+// ══════════════════════════════════════════════════
+//  IMAGE HANDLERS
+// ══════════════════════════════════════════════════
+function ensureRank(key, r){
+  if(!state.sections[key]) state.sections[key]={week:'',ranks:{}};
+  if(!state.sections[key].ranks[r]) state.sections[key].ranks[r]={name:'',stat:'',dp:'',frame:''};
+}
+
+async function handleDP(inp, key, r){
   const file = inp.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    if(!state.sections[key]) state.sections[key]={week:'',ranks:{}};
-    if(!state.sections[key].ranks[r]) state.sections[key].ranks[r]={name:'',stat:'',dp:'',frame:''};
-    state.sections[key].ranks[r].dp = e.target.result;
-    const prev = document.getElementById('dp_preview_'+key+'_'+r);
+  showProgress('DP compress ho rahi hai...', 40);
+  try {
+    const compressed = await compressImage(file, IMG_MAX_SIZE, IMG_QUALITY);
+    ensureRank(key, r);
+    state.sections[key].ranks[r].dp = compressed;
+    const prev = document.getElementById('dp_prev_'+key+'_'+r);
     const icon = document.getElementById('dp_icon_'+key+'_'+r);
-    if(prev){ prev.src=e.target.result; prev.style.display='block'; }
+    const sizeTag = document.getElementById('dp_size_'+key+'_'+r);
+    if(prev){ prev.src=compressed; prev.style.display='block'; }
     if(icon) icon.style.display='none';
-    showToast('DP uploaded!');
-  };
-  reader.readAsDataURL(file);
+    if(sizeTag) sizeTag.textContent = '✅ ' + b64SizeKB(compressed) + ' KB (compressed)';
+    saveState(); updateSizeMeter(); hideProgress();
+    showToast('DP uploaded & compressed! (' + b64SizeKB(compressed) + ' KB)');
+  } catch(e){ hideProgress(); showToast('❌ DP error'); }
 }
 
-function handleFrame(inp, key, r){
+async function handleFrame(inp, key, r){
   const file = inp.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    if(!state.sections[key]) state.sections[key]={week:'',ranks:{}};
-    if(!state.sections[key].ranks[r]) state.sections[key].ranks[r]={name:'',stat:'',dp:'',frame:''};
-    state.sections[key].ranks[r].frame = e.target.result;
-    const prev = document.getElementById('fr_preview_'+key+'_'+r);
+  showProgress('Frame compress ho raha hai...', 40);
+  try {
+    const compressed = await compressImage(file, FRAME_MAX, FRAME_QUALITY);
+    ensureRank(key, r);
+    state.sections[key].ranks[r].frame = compressed;
+    const prev = document.getElementById('fr_prev_'+key+'_'+r);
     const icon = document.getElementById('fr_icon_'+key+'_'+r);
-    if(prev){ prev.src=e.target.result; prev.style.display='block'; }
+    const sizeTag = document.getElementById('fr_size_'+key+'_'+r);
+    if(prev){ prev.src=compressed; prev.style.display='block'; }
     if(icon) icon.style.display='none';
-    showToast('Frame uploaded!');
-  };
-  reader.readAsDataURL(file);
+    if(sizeTag) sizeTag.textContent = '✅ ' + b64SizeKB(compressed) + ' KB (compressed)';
+    saveState(); updateSizeMeter(); hideProgress();
+    showToast('Frame uploaded! (' + b64SizeKB(compressed) + ' KB)');
+  } catch(e){ hideProgress(); showToast('❌ Frame error'); }
 }
 
-// ── SAVE ──────────────────────────────────────────────────────────────
+function clearDP(key, r){
+  if(!confirm('Yeh DP hata dein?')) return;
+  ensureRank(key,r);
+  state.sections[key].ranks[r].dp = '';
+  saveState(); updateSizeMeter(); renderSections();
+  showToast('DP hata diya!');
+}
+
+function clearFrame(key, r){
+  if(!confirm('Yeh frame hata dein?')) return;
+  ensureRank(key,r);
+  state.sections[key].ranks[r].frame = '';
+  saveState(); updateSizeMeter(); renderSections();
+  showToast('Frame hata diya!');
+}
+
+// ══════════════════════════════════════════════════
+//  SAVE
+// ══════════════════════════════════════════════════
 function saveAll(){
   saveState();
-  showToast('✅ Sab kuch save ho gaya!');
+  updateSizeMeter();
+  showToast('✅ Sab save ho gaya!');
 }
 
-// ── EXPORT ───────────────────────────────────────────────────────────
-function buildExportData(){
-  // Build clean JSON for index.html
-  return JSON.stringify(state, null, 2);
-}
-
+// ══════════════════════════════════════════════════
+//  EXPORT
+// ══════════════════════════════════════════════════
 function openExport(){
-  document.getElementById('export-ta').value = buildExportData();
+  const json = getJSONString();
+  const mb   = (new Blob([json]).size / 1024 / 1024).toFixed(2);
+  document.getElementById('export-ta').value = json;
+
+  const info = document.getElementById('export-size-info');
+  const ok   = parseFloat(mb) < 24;
+  info.style.color = ok ? '#00e5ff' : '#ff4d80';
+  info.textContent = (ok ? '✅ ' : '⚠️ ') + 'File size: ' + mb + ' MB' +
+    (ok ? ' — GitHub ke liye safe!' : ' — 25MB limit cross! Kuch images remove karo.');
+
   document.getElementById('export-modal').classList.add('open');
 }
-function closeExport(){
-  document.getElementById('export-modal').classList.remove('open');
-}
+function closeExport(){ document.getElementById('export-modal').classList.remove('open'); }
+
 function downloadJSON(){
-  const blob = new Blob([buildExportData()], {type:'application/json'});
+  const blob = new Blob([getJSONString()],{type:'application/json'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
   a.download='rizz-data.json'; a.click();
+  showToast('⬇️ Download ho raha hai!');
 }
 function copyJSON(){
-  navigator.clipboard.writeText(buildExportData()).then(()=>showToast('Copied!'));
+  navigator.clipboard.writeText(getJSONString()).then(()=>showToast('📋 Copied!'));
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  IMPORT
+// ══════════════════════════════════════════════════
+function openImport(){ document.getElementById('import-modal').classList.add('open'); }
+function closeImport(){ document.getElementById('import-modal').classList.remove('open'); }
+
+async function handleImport(inp){
+  const file = inp.files[0]; if(!file) return;
+  const status = document.getElementById('import-status');
+  status.textContent = '⏳ Import ho raha hai...';
+  showProgress('JSON import ho raha hai...', 50);
+
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+
+    if(!parsed.sections) throw new Error('Invalid JSON format — sections missing');
+
+    // Re-compress all images in imported JSON
+    let processed = 0;
+    const allImgs = [];
+    for(const secKey of Object.keys(parsed.sections || {})){
+      for(const r of [1,2,3]){
+        const rdata = parsed.sections[secKey]?.ranks?.[r];
+        if(rdata?.dp)    allImgs.push({obj:rdata, field:'dp',    maxPx:IMG_MAX_SIZE, q:IMG_QUALITY});
+        if(rdata?.frame) allImgs.push({obj:rdata, field:'frame', maxPx:FRAME_MAX,    q:FRAME_QUALITY});
+      }
+    }
+    if(parsed.logo) allImgs.push({obj:parsed, field:'logo', maxPx:300, q:0.82});
+
+    const total = allImgs.length;
+    for(const item of allImgs){
+      const orig = item.obj[item.field];
+      if(orig && orig.startsWith('data:')){
+        try {
+          // Compress via canvas
+          const recompressed = await recompressBase64(orig, item.maxPx, item.q);
+          item.obj[item.field] = recompressed;
+        } catch(e){ /* keep original if recompress fails */ }
+      }
+      processed++;
+      updateProgress('Images compress ho rahi hain... (' + processed + '/' + total + ')', Math.round(50 + (processed/total)*45));
+    }
+
+    state = parsed;
+    saveState(); updateSizeMeter();
+    hideProgress();
+    closeImport();
+    renderTabs(); renderSections();
+
+    // Update logo preview
+    if(state.logo){
+      const p = document.getElementById('logo-preview');
+      const ph = document.getElementById('logo-placeholder');
+      if(p){ p.src=state.logo; p.style.display='block'; }
+      if(ph) ph.style.display='none';
+    }
+
+    const mb = (new Blob([getJSONString()]).size/1024/1024).toFixed(1);
+    showToast('✅ Import done! Size: ' + mb + ' MB');
+    status.textContent = '✅ Import successful! ' + total + ' images re-compressed.';
+
+  } catch(e){
+    hideProgress();
+    status.textContent = '❌ Error: ' + e.message;
+    showToast('❌ Import failed!');
+  }
+}
+
+// Recompress base64 image via canvas
+function recompressBase64(b64, maxPx, quality){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onerror = reject;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w=img.width, h=img.height;
+      if(w>h){ if(w>maxPx){ h=Math.round(h*maxPx/w); w=maxPx; } }
+      else    { if(h>maxPx){ w=Math.round(w*maxPx/h); h=maxPx; } }
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = b64;
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════════════════
+function showProgress(msg, pct){
+  document.getElementById('progress-overlay').classList.add('show');
+  document.getElementById('progress-text').textContent = msg;
+  document.getElementById('progress-fill').style.width = (pct||10) + '%';
+}
+function updateProgress(msg, pct){
+  document.getElementById('progress-text').textContent = msg;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+function hideProgress(){
+  document.getElementById('progress-fill').style.width = '100%';
+  setTimeout(()=>{ document.getElementById('progress-overlay').classList.remove('show'); }, 300);
+}
+
+// ══════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════
+let toastTimer;
 function showToast(msg='Saved!'){
+  clearTimeout(toastTimer);
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2000);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2500);
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════════
 function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 
-// ── INIT ──────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
 function initAdmin(){
   loadState();
-  if(state.logo) document.getElementById('logo-preview').src = state.logo;
+  if(state.logo){
+    const p = document.getElementById('logo-preview');
+    const ph = document.getElementById('logo-placeholder');
+    p.src=state.logo; p.style.display='block'; ph.style.display='none';
+    document.getElementById('logo-size-tag').textContent = b64SizeKB(state.logo) + ' KB';
+  }
+  updateSizeMeter();
   renderTabs();
   renderSections();
 }
 
-// Close export on bg click
-document.getElementById('export-modal').addEventListener('click', function(e){
-  if(e.target===this) closeExport();
-});
+// Close modals on bg click
+document.getElementById('export-modal').addEventListener('click',function(e){if(e.target===this)closeExport();});
+document.getElementById('import-modal').addEventListener('click',function(e){if(e.target===this)closeImport();});
 </script>
 </body>
 </html>
