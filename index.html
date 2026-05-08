@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+#app{font-family:'Poppins',sans-serif;background:#0a0a1a;color:#fff;overflow-x:hidden}
+#intro{position:relative;width:100%;min-height:520px;background:linear-gradient(135deg,#0a0a2e 0%,#1a0a3e 40%,#2a0a1e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border-radius:16px}
+.stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{0%{opacity:.2}100%{opacity:.9}}
+.intro-logo-ring{width:110px;height:110px;border-radius:50%;border:3px solid #ff6b35;background:linear-gradient(135deg,#1a0a3e,#2a0a1e);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 0 30px #ff6b3580,0 0 60px #ff6b3530;animation:pulse 2s infinite;overflow:hidden}
+@keyframes pulse{0%,100%{box-shadow:0 0 30px #ff6b3580,0 0 60px #ff6b3530}50%{box-shadow:0 0 50px #ff6b35bb,0 0 90px #ff6b3560}}
+.intro-logo-text{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;text-align:center}
+.intro-title{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;background:linear-gradient(90deg,#ff6b35,#ffb347,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:8px;animation:shimmer 3s linear infinite;background-size:200%}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+.intro-sub{font-size:15px;color:#ccc;letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:10px}
+.india-badge{font-weight:700;font-size:13px;letter-spacing:2px;margin-bottom:6px;color:#fff}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:#e0004d;color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:2px;animation:liveBlink 1.5s infinite}
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.6}}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:liveBlink 1s infinite}
+.timer{font-family:'Orbitron',sans-serif;font-size:38px;color:#ffb347;font-weight:900;margin-top:18px;min-height:50px}
+#main{display:none;width:100%;background:linear-gradient(160deg,#080818 0%,#12082a 50%,#1a0810 100%);border-radius:16px;padding-bottom:30px}
+.page-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 10px;border-bottom:1px solid #ffffff20}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.hdr-logo-ring{width:44px;height:44px;border-radius:50%;border:2px solid #ff6b35;background:#1a0a3e;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hdr-logo-fallback{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;color:#fff;text-align:center;line-height:1.2}
+.hdr-brand{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#ff6b35}
+.hdr-sub{font-size:10px;color:#aaa;letter-spacing:2px;text-transform:uppercase}
+.hdr-live{display:flex;align-items:center;gap:5px;background:#e0004d22;border:1px solid #e0004d;color:#ff4d80;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:1px}
+.section-title{text-align:center;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#ffb347;letter-spacing:2px;text-transform:uppercase;padding:18px 0 4px}
+.section-week{text-align:center;font-size:11px;color:#aaa;letter-spacing:2px;margin-bottom:12px}
+.top3-row{display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:0 8px 10px}
+.top-card{display:flex;flex-direction:column;align-items:center;border-radius:14px;padding:14px 8px 12px;position:relative;flex:1;max-width:160px;border:1px solid #ffffff20}
+.top-card.rank1{background:linear-gradient(160deg,#1a1230,#2d1a50);border-color:#ffd700;order:2;min-height:210px}
+.top-card.rank2{background:linear-gradient(160deg,#12121e,#1e1e32);border-color:#c0c0c0;order:1;min-height:185px}
+.top-card.rank3{background:linear-gradient(160deg,#12121e,#1e1830);border-color:#cd7f32;order:3;min-height:185px}
+.rank-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.rank1 .rank-badge{background:#ffd700;color:#1a0a3e}
+.rank2 .rank-badge{background:#c0c0c0;color:#1a0a3e}
+.rank3 .rank-badge{background:#cd7f32;color:#1a0a3e}
+.dp-wrapper{position:relative;margin:8px auto 6px}
+.dp-wrapper.sz-big{width:74px;height:74px}
+.dp-wrapper.sz-sm{width:62px;height:62px}
+.dp-circle{width:100%;height:100%;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#2a1a4a,#1a1a3a);display:flex;align-items:center;justify-content:center;font-size:9px;color:#555;text-align:center;line-height:1.3}
+.dp-circle img{width:100%;height:100%;object-fit:cover}
+.rank1 .dp-circle{border:2px solid #ffd700}
+.rank2 .dp-circle{border:2px solid #c0c0c0}
+.rank3 .dp-circle{border:2px solid #cd7f32}
+.dp-frame-img{position:absolute;inset:-6px;width:calc(100% + 12px);height:calc(100% + 12px);pointer-events:none;object-fit:contain}
+.dp-frame-ring{position:absolute;inset:-4px;border-radius:50%;border:1.5px dashed currentColor;opacity:.5;animation:spin 8s linear infinite}
+.rank1 .dp-frame-ring{color:#ffd700}
+.rank2 .dp-frame-ring{color:#c0c0c0}
+.rank3 .dp-frame-ring{color:#cd7f32}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.medal-label{font-size:11px;font-weight:700;letter-spacing:1px;margin-top:4px}
+.rank1 .medal-label{color:#ffd700;font-size:13px}
+.rank2 .medal-label{color:#c0c0c0}
+.rank3 .medal-label{color:#cd7f32}
+.card-name{font-size:12px;font-weight:600;color:#eee;text-align:center;margin-top:2px;word-break:break-word;max-width:130px}
+.rank1 .card-name{font-size:13px;font-weight:700}
+.stat-row{display:flex;align-items:center;gap:5px;margin-top:6px;background:#ffffff08;border-radius:8px;padding:4px 7px;min-width:0}
+.stat-icon{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.stat-text{display:flex;flex-direction:column;min-width:0}
+.stat-label{font-size:9px;color:#aaa;font-weight:600;letter-spacing:.4px;white-space:nowrap}
+.stat-val{font-size:11px;font-weight:700;white-space:nowrap}
+.diamond-icon svg{filter:drop-shadow(0 0 4px #e0004daa)}
+.sec-divider{display:flex;align-items:center;gap:8px;margin:4px 16px}
+.sec-divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,#ff6b3560,transparent)}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="intro">
+  <div class="stars" id="starfield"></div>
+  <div class="intro-logo-ring" id="intro-logo">
+    <div class="intro-logo-text">RIZZ<br>LIVE</div>
+  </div>
+  <div class="intro-title">RIZZ LIVE</div>
+  <div class="intro-sub">Weekly Honour Wall</div>
+  <div class="india-badge">🇮🇳 &nbsp;INDIA&nbsp; 🇮🇳</div>
+  <div style="margin-top:10px"><span class="live-badge"><span class="live-dot"></span>LIVE</span></div>
+  <div class="timer" id="countdown">3</div>
+</div>
 
+<div id="main">
+  <div class="page-header">
+    <div class="hdr-logo">
+      <div class="hdr-logo-ring" id="hdr-logo-ring">
+        <div class="hdr-logo-fallback">RIZZ<br>LIVE</div>
+      </div>
+      <div>
+        <div class="hdr-brand">RIZZ LIVE</div>
+        <div class="hdr-sub">India</div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#fff;letter-spacing:1px">Weekly Honours</div>
+    </div>
+    <div class="hdr-live"><span style="width:7px;height:7px;border-radius:50%;background:#e0004d;display:inline-block;animation:liveBlink 1s infinite"></span>LIVE</div>
+  </div>
+
+  <div id="sections-container"></div>
+
+  <div style="text-align:center;padding:18px 0 8px">
+    <div style="font-size:10px;color:#444;letter-spacing:2px">RIZZ LIVE · INDIA · WEEKLY HONOURS</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px">
+      <div style="width:16px;height:4px;background:#ff9933;border-radius:2px"></div>
+      <div style="width:16px;height:4px;background:#fff;border-radius:2px"></div>
+      <div style="width:16px;height:4px;background:#138808;border-radius:2px"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  { key:'agency',      emoji:'🏆', title:'Top 3 Agency',           week:'Week 1st',
+    stat:{ label:'Ruby Target', icon:'ruby_diamond', color:'#ff4d80' } },
+  { key:'host',        emoji:'🎤', title:'Top 3 Host',              week:'Week 1st',
+    stat:{ label:'Ruby Target', icon:'ruby_diamond', color:'#ff4d80' } },
+  { key:'recharger',   emoji:'💰', title:'Top 3 Recharger',         week:'Week 1st',
+    stat:{ label:'Weekly Recharge', icon:'coin', color:'#ffd700' } },
+  { key:'gifter',      emoji:'🎁', title:'Top 3 Gifter',            week:'Week 1st',
+    stat:{ label:'Ruby', icon:'ruby_diamond', color:'#ff4d80' } },
+  { key:'activehost',  emoji:'🔴', title:'Top 3 Active Host',       week:'Sabse Zyada Live Time',
+    stat:{ label:'Most Active', icon:'clock', color:'#00e5ff' } },
+  { key:'newagency',   emoji:'🌟', title:'New Top 3 Agency',        week:'Naye Agency — Week 1st',
+    stat:{ label:'Ruby Target', icon:'ruby_diamond', color:'#ff4d80' } },
+  { key:'agencytime',  emoji:'⏱', title:'Top 3 Agency — App Time', week:'Sabse Zyada App Par Samay',
+    stat:{ label:'Most Active', icon:'clock', color:'#00e5ff' } },
+];
+const RANKS = [
+  { r:1, medal:'🥇 GOLD',  sz:'big' },
+  { r:2, medal:'SILVER',   sz:'sm'  },
+  { r:3, medal:'BRONZE',   sz:'sm'  },
+];
+const RANK_ORDER = [2,1,3];
+
+// ── IMAGE FOLDER PATH ────────────────────────────────────────────────
+// Saari images ek folder mein rakho, bas yahan path do
+// Example: './images/'  ya  '../assets/rizz/'
+const IMG_BASE = './images/';
+
+// Image filename convention:
+//   App Logo       →  app_logo.png
+//   DP             →  top1_agency.png, top2_host.png, etc.
+//   Avatar Frame   →  agency_top1_avtar-frame.png, host_top2_avtar-frame.png, etc.
+
+function imgSrc(filename){
+  return IMG_BASE + filename;
+}
+
+// ── ICONS ────────────────────────────────────────────────────────────
+function diamondSVG(size=18){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#ff1744"/>
+        <stop offset="40%" style="stop-color:#ff4d80"/>
+        <stop offset="70%" style="stop-color:#c2003a"/>
+        <stop offset="100%" style="stop-color:#7b0026"/>
+      </linearGradient>
+      <linearGradient id="dg2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#ff6090;stop-opacity:.8"/>
+        <stop offset="100%" style="stop-color:#c2003a;stop-opacity:.2"/>
+      </linearGradient>
+    </defs>
+    <polygon points="12,1 22,8 12,23 2,8" fill="url(#dg)" stroke="#ff1744" stroke-width=".4"/>
+    <polygon points="12,1 22,8 12,23 2,8" fill="url(#dg2)"/>
+    <polygon points="12,1 17,8 12,7 7,8" fill="#ff6090" opacity=".7"/>
+    <polygon points="7,8 12,7 17,8 12,23" fill="#9b0030" opacity=".6"/>
+    <line x1="12" y1="1" x2="12" y2="7" stroke="#ffaac5" stroke-width=".5" opacity=".8"/>
+    <line x1="7" y1="8" x2="17" y2="8" stroke="#ffaac5" stroke-width=".4" opacity=".6"/>
+  </svg>`;
+}
+function coinSVG(size=18){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="cg" cx="40%" cy="35%">
+        <stop offset="0%" style="stop-color:#ffe066"/>
+        <stop offset="60%" style="stop-color:#ffd700"/>
+        <stop offset="100%" style="stop-color:#b8860b"/>
+      </radialGradient>
+    </defs>
+    <circle cx="12" cy="12" r="10.5" fill="url(#cg)" stroke="#b8860b" stroke-width=".5"/>
+    <circle cx="12" cy="12" r="8.5" fill="none" stroke="#ffe98a" stroke-width=".8" opacity=".7"/>
+    <text x="12" y="16.5" text-anchor="middle" font-size="9" font-weight="700" fill="#7a5c00" font-family="serif">₹</text>
+  </svg>`;
+}
+function clockSVG(size=18){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10.5" fill="none" stroke="#00e5ff" stroke-width="1.2"/>
+    <circle cx="12" cy="12" r="1.5" fill="#00e5ff"/>
+    <line x1="12" y1="12" x2="12" y2="5" stroke="#00e5ff" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="12" y1="12" x2="17" y2="14" stroke="#00bcd4" stroke-width="1.2" stroke-linecap="round"/>
+  </svg>`;
+}
+function getIcon(type, size=16){
+  if(type==='ruby_diamond') return diamondSVG(size);
+  if(type==='coin') return coinSVG(size);
+  if(type==='clock') return clockSVG(size);
+  return '';
+}
+
+// ── CARD BUILDER ─────────────────────────────────────────────────────
+function buildCard(sec, ri){
+  const r = ri.r;
+  const dpFile   = `top${r}_${sec.key}.png`;
+  const frFile   = `${sec.key}_top${r}_avtar-frame.png`;
+
+  const defaultName = {
+    agency:'Agency Name', newagency:'Agency Name', agencytime:'Agency Name',
+    host:'Host Name', activehost:'Host Name',
+    recharger:'Recharger Name', gifter:'Gifter Name'
+  }[sec.key] || 'Name';
+
+  const statIcon = getIcon(sec.stat.icon, 15);
+  const statVal  = sec.stat.icon === 'clock' ? '999 hrs' : '999,999';
+
+  const card = document.createElement('div');
+  card.className = `top-card rank${r}`;
+  card.innerHTML = `
+    <span class="rank-badge">${r}</span>
+    <div class="dp-wrapper sz-${ri.sz}">
+      <div class="dp-circle">
+        <img src="${imgSrc(dpFile)}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+             style="display:block">
+        <span style="display:none;font-size:9px;color:#555;text-align:center">DP</span>
+      </div>
+      <img class="dp-frame-img"
+           src="${imgSrc(frFile)}"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+           style="display:block">
+      <div class="dp-frame-ring" style="display:none"></div>
+    </div>
+    <div class="medal-label">${ri.medal}</div>
+    <div class="card-name">${defaultName}</div>
+    <div class="stat-row">
+      <div class="stat-icon diamond-icon">${statIcon}</div>
+      <div class="stat-text">
+        <span class="stat-label">${sec.stat.label}</span>
+        <span class="stat-val" style="color:${sec.stat.color}">${statVal}</span>
+      </div>
+    </div>`;
+  return card;
+}
+
+function buildSection(sec){
+  const wrap = document.createElement('div');
+  const t1 = document.createElement('div'); t1.className='section-title'; t1.textContent=`${sec.emoji} ${sec.title}`;
+  const t2 = document.createElement('div'); t2.className='section-week'; t2.textContent=sec.week;
+  wrap.appendChild(t1); wrap.appendChild(t2);
+  const row = document.createElement('div'); row.className='top3-row';
+  RANK_ORDER.forEach(r => row.appendChild(buildCard(sec, RANKS.find(x=>x.r===r))));
+  wrap.appendChild(row);
+  const div = document.createElement('div'); div.className='sec-divider';
+  div.innerHTML=`<div class="sec-divider-line"></div><div style="font-size:14px">${sec.emoji}</div><div class="sec-divider-line"></div>`;
+  wrap.appendChild(div);
+  return wrap;
+}
+
+function renderAll(){
+  // App Logo
+  const logoImg = new Image();
+  logoImg.src = imgSrc('app_logo.png');
+  logoImg.onload = () => {
+    const il = document.getElementById('intro-logo');
+    if(il) il.innerHTML = `<img src="${logoImg.src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    const hl = document.getElementById('hdr-logo-ring');
+    if(hl) hl.innerHTML = `<img src="${logoImg.src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+  };
+  // Sections
+  const c = document.getElementById('sections-container');
+  c.innerHTML = '';
+  SECTIONS.forEach(s => c.appendChild(buildSection(s)));
+}
+
+// ── STARS ────────────────────────────────────────────────────────────
+const sf = document.getElementById('starfield');
+for(let i=0;i<60;i++){
+  const s=document.createElement('div'); s.className='star';
+  const sz=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*2}s;animation-duration:${1.5+Math.random()*2}s`;
+  sf.appendChild(s);
+}
+
+// ── COUNTDOWN ───────────────────────────────────────────────────────
+const cd=document.getElementById('countdown');
+let n=3;
+const ti=setInterval(()=>{
+  n--;
+  if(n<=0){
+    clearInterval(ti);
+    cd.textContent='';
+    setTimeout(()=>{
+      document.getElementById('intro').style.display='none';
+      const m=document.getElementById('main'); m.style.display='block';
+      renderAll();
+    },400);
+  } else cd.textContent=n;
+},1000);
+</script>
+</body>
+</html>
