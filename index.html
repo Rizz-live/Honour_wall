@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rizz Live — Honour Wall</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Bebas+Neue&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -36,7 +36,8 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
   animation:ringRot 4s linear infinite;
   box-shadow:0 0 40px rgba(255,215,0,.4);
 }
-@keyframes ringRot{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(360deg)}}
+/* FIXED: ringRot no longer changes hue so logo colors stay true */
+@keyframes ringRot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .intro-logo-inner{
   width:100%;height:100%;border-radius:50%;overflow:hidden;
   background:linear-gradient(135deg,#16063a,#2e0c5c,#0f0430);
@@ -68,25 +69,107 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 #main{display:none;width:100%;max-width:540px;margin:0 auto;min-height:100vh;position:relative;z-index:1;padding-bottom:80px}
 #confetti-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* HEADER */
+/* ═══ PREMIUM HEADER ═══ */
 .page-header{
-  position:sticky;top:0;z-index:50;padding:10px 16px;
-  background:rgba(3,2,10,.9);backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,215,0,.1);
+  position:sticky;top:0;z-index:50;
+  padding:0 16px;
+  background:rgba(3,2,10,.95);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border-bottom:1px solid rgba(255,215,0,.08);
   display:flex;align-items:center;justify-content:space-between;gap:8px;
+  min-height:64px;
+  overflow:hidden;
 }
-.page-header::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,.5),transparent)}
-.hdr-left{display:flex;align-items:center;gap:10px}
-.hdr-logo-wrap{width:38px;height:38px;border-radius:50%;overflow:hidden;border:1.5px solid var(--gold3);background:#16063a;box-shadow:0 0 12px rgba(255,180,0,.3);flex-shrink:0}
-.hdr-logo-wrap img{width:100%;height:100%;object-fit:cover}
-.hdr-logo-fallback{font-family:'Cinzel Decorative',cursive;font-size:6px;font-weight:900;color:var(--gold);text-align:center;padding-top:10px;line-height:1.4}
-.hdr-brand{font-family:'Cinzel Decorative',cursive;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px;line-height:1.2}
-.hdr-sub{font-size:8px;color:var(--muted);letter-spacing:3px}
-.hdr-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:4px;color:#fff}
-.hdr-live{display:flex;align-items:center;gap:5px;background:rgba(255,61,127,.08);border:1px solid rgba(255,61,127,.25);border-radius:20px;padding:5px 10px;flex-shrink:0}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:lPing 1.4s ease infinite}
+
+/* Subtle gold shimmer line at top of header */
+.page-header::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,215,0,.0) 10%,rgba(255,215,0,.7) 40%,rgba(255,215,0,1) 50%,rgba(255,215,0,.7) 60%,rgba(255,215,0,.0) 90%,transparent 100%);
+  animation:hdrShimmer 4s ease-in-out infinite;
+}
+@keyframes hdrShimmer{
+  0%,100%{opacity:.4;transform:scaleX(.6)}
+  50%{opacity:1;transform:scaleX(1)}
+}
+
+/* Faint geometric accent behind header */
+.page-header::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.12) 25%,rgba(180,79,255,.1) 50%,rgba(255,215,0,.12) 75%,transparent);
+}
+
+/* ── Logo side ── */
+.hdr-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+.hdr-logo-wrap{
+  width:42px;height:42px;border-radius:50%;overflow:hidden;
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  flex-shrink:0;
+  position:relative;
+}
+/* Glowing ring around logo – static gold, no color animation */
+.hdr-logo-wrap::before{
+  content:'';position:absolute;inset:-2px;border-radius:50%;
+  background:conic-gradient(from 90deg,rgba(255,215,0,.9),rgba(255,179,0,.4),rgba(255,215,0,.9));
+  z-index:-1;animation:logoRingRotate 6s linear infinite;
+}
+@keyframes logoRingRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.hdr-logo-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;position:relative;z-index:1}
+.hdr-logo-fallback{
+  font-family:'Cinzel Decorative',cursive;font-size:6px;font-weight:900;
+  color:var(--gold);text-align:center;padding-top:10px;line-height:1.4;
+}
+
+.hdr-text-group{display:flex;flex-direction:column;gap:1px}
+.hdr-brand{
+  font-family:'Cinzel Decorative',cursive;font-size:11px;font-weight:700;
+  background:linear-gradient(90deg,#ffe566,#ffd700,#ffb300);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:1.5px;line-height:1.2;white-space:nowrap;
+}
+.hdr-sub{font-size:7.5px;color:rgba(255,215,0,.35);letter-spacing:3px;text-transform:uppercase;white-space:nowrap}
+
+/* ── Center title ── */
+.hdr-center{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+}
+.hdr-title-main{
+  font-family:'Cinzel',serif;font-size:13px;font-weight:900;
+  letter-spacing:5px;text-transform:uppercase;
+  background:linear-gradient(180deg,#ffffff 0%,rgba(255,245,210,1) 40%,rgba(255,215,0,.9) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;
+}
+.hdr-title-sub{
+  font-size:7px;letter-spacing:4px;color:rgba(255,255,255,.2);text-transform:uppercase;white-space:nowrap;
+}
+
+/* Thin decorative line below HONOUR WALL text */
+.hdr-title-line{
+  width:50px;height:1px;margin-top:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.5),transparent);
+}
+
+/* ── Right side LIVE badge ── */
+.hdr-live{
+  display:flex;align-items:center;gap:5px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(255,61,127,.06),rgba(255,61,127,.12));
+  border:1px solid rgba(255,61,127,.3);
+  border-radius:20px;padding:6px 11px;
+  box-shadow:0 0 12px rgba(255,61,127,.08),inset 0 1px 0 rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+}
+.hdr-live::before{
+  content:'';position:absolute;top:0;left:-40%;width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,61,127,.12),transparent);
+  animation:liveSweep 3s ease-in-out infinite;
+}
+@keyframes liveSweep{0%{left:-40%}100%{left:140%}}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:lPing 1.4s ease infinite;flex-shrink:0}
 @keyframes lPing{0%{box-shadow:0 0 0 0 rgba(255,61,127,.6)}70%{box-shadow:0 0 0 8px rgba(255,61,127,0)}100%{box-shadow:0 0 0 0 rgba(255,61,127,0)}}
-.live-txt{font-size:9px;font-weight:700;color:var(--pink);letter-spacing:2px}
+.live-txt{font-family:'Bebas Neue',sans-serif;font-size:11px;font-weight:700;color:var(--pink);letter-spacing:2px}
 
 /* SECTION */
 .section-block{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;padding-bottom:4px}
@@ -111,7 +194,6 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 }
 .top-card:hover{transform:translateY(-6px) scale(1.02)}
 
-/* Card backgrounds */
 .top-card.rank1{
   background:linear-gradient(160deg,#0b1a2e 0%,#0d2545 40%,#071525 100%);
   border:1px solid rgba(100,220,255,.45);min-height:300px;
@@ -128,7 +210,6 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
   box-shadow:0 6px 24px rgba(205,127,50,.06),inset 0 1px 0 rgba(205,127,50,.06);
 }
 
-/* crown */
 .crown-ico{
   position:absolute;top:-22px;left:50%;transform:translateX(-50%);
   font-size:26px;filter:drop-shadow(0 0 12px rgba(100,220,255,.9));
@@ -136,7 +217,6 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 }
 @keyframes cFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-4deg)}50%{transform:translateX(-50%) translateY(-8px) rotate(4deg)}}
 
-/* rank badge */
 .rank-badge{
   position:absolute;top:-10px;right:12px;
   width:26px;height:26px;border-radius:50%;
@@ -147,7 +227,7 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 .rank2 .rank-badge{background:linear-gradient(135deg,#eceff8,#b0b4c8,#7a7e8e);color:#0a0a1a;box-shadow:0 2px 8px rgba(180,184,210,.4)}
 .rank3 .rank-badge{background:linear-gradient(135deg,#e8a060,#b06830,#7a3e10);color:#fff8f0;box-shadow:0 2px 8px rgba(180,100,40,.4)}
 
-/* DP */
+/* DP — FIXED: no hue-rotate on the ring so logo colors stay real */
 .dp-wrap{position:relative;margin:6px auto 0;flex-shrink:0}
 .dp-wrap.big{width:88px;height:88px}
 .dp-wrap.sm{width:72px;height:72px}
@@ -162,13 +242,19 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 .rank2 .dp-img-circle{border:2.5px solid var(--silver);box-shadow:0 0 0 2px rgba(200,204,216,.08),0 0 14px rgba(200,204,216,.1)}
 .rank3 .dp-img-circle{border:2.5px solid var(--bronze);box-shadow:0 0 0 2px rgba(205,127,50,.08),0 0 14px rgba(205,127,50,.1)}
 .dp-frame{position:absolute;inset:-12px;width:calc(100% + 24px);height:calc(100% + 24px);pointer-events:none;object-fit:contain;z-index:3}
-.dp-ring{position:absolute;inset:-7px;border-radius:50%;border:1.5px dashed currentColor;opacity:.35;animation:sRing 12s linear infinite;pointer-events:none}
+
+/* FIXED: dp-ring spins (rotate) only — no hue-rotate so logo/dp colors stay true */
+.dp-ring{
+  position:absolute;inset:-7px;border-radius:50%;
+  border:1.5px dashed currentColor;opacity:.35;
+  animation:dpRingRotate 12s linear infinite;pointer-events:none;
+}
+@keyframes dpRingRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .rank1 .dp-ring{color:#4dd8f0;opacity:.6}
 .rank2 .dp-ring{color:var(--silver)}
 .rank3 .dp-ring{color:var(--bronze)}
-@keyframes sRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-/* ═══ TIER BADGE ═══ */
+/* TIER BADGE */
 .tier-label{
   display:inline-flex;align-items:center;gap:5px;
   border-radius:30px;padding:4px 11px 4px 8px;
@@ -189,27 +275,18 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 .tier-bronze .tier-txt{background:linear-gradient(90deg,#e8a060,#cd7f32,#a05020,#cd7f32,#e8a060);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:tFlow 3s linear infinite}
 @keyframes tFlow{0%{background-position:0%}100%{background-position:200%}}
 
-/* ═══ NAME ═══ */
+/* NAME */
 .card-name{
-  font-family:'Cinzel',serif;
-  font-size:11px;font-weight:700;
-  color:#ffffff;
-  text-align:center;
-  word-break:break-word;
-  max-width:138px;
-  line-height:1.35;
-  margin-top:8px;
-  margin-bottom:7px;
-  padding:0 4px;
-  position:relative;
-  z-index:2;
-  text-shadow:0 1px 8px rgba(0,0,0,.8);
+  font-family:'Cinzel',serif;font-size:11px;font-weight:700;
+  color:#ffffff;text-align:center;word-break:break-word;
+  max-width:138px;line-height:1.35;margin-top:8px;margin-bottom:7px;
+  padding:0 4px;position:relative;z-index:2;text-shadow:0 1px 8px rgba(0,0,0,.8);
 }
 .rank1 .card-name{font-size:12.5px;color:#fff;text-shadow:0 0 14px rgba(100,220,255,.3),0 1px 8px rgba(0,0,0,.8)}
 .rank2 .card-name{color:#e8e6ff}
 .rank3 .card-name{color:#f5e8d8}
 
-/* ═══ STAT CHIP ═══ */
+/* STAT CHIP */
 .stat-chip{
   display:flex;align-items:center;gap:7px;
   border-radius:12px;padding:7px 9px;width:100%;
@@ -252,7 +329,7 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 
 /* Loading */
 #loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px;gap:14px}
-.loading-spinner{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);animation:sRing 1s linear infinite}
+.loading-spinner{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.06);border-top-color:var(--gold);animation:dpRingRotate 1s linear infinite}
 .loading-txt{font-size:10px;color:var(--muted);letter-spacing:3px;text-transform:uppercase}
 
 /* BG */
@@ -298,14 +375,31 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
 <div id="main">
   <div class="bg-glow bg-glow1"></div>
   <div class="bg-glow bg-glow2"></div>
+
+  <!-- PREMIUM HEADER -->
   <div class="page-header">
     <div class="hdr-left">
-      <div class="hdr-logo-wrap" id="hdr-logo-wrap"><div class="hdr-logo-fallback">RIZZ<br>LIVE</div></div>
-      <div><div class="hdr-brand">RIZZ LIVE</div><div class="hdr-sub">Weekly Honours</div></div>
+      <div class="hdr-logo-wrap" id="hdr-logo-wrap">
+        <div class="hdr-logo-fallback">RIZZ<br>LIVE</div>
+      </div>
+      <div class="hdr-text-group">
+        <div class="hdr-brand">RIZZ LIVE</div>
+        <div class="hdr-sub">Weekly Honours</div>
+      </div>
     </div>
-    <div class="hdr-title">HONOUR WALL</div>
-    <div class="hdr-live"><span class="live-dot"></span><span class="live-txt">LIVE</span></div>
+
+    <div class="hdr-center">
+      <div class="hdr-title-main">HONOUR WALL</div>
+      <div class="hdr-title-line"></div>
+      <div class="hdr-title-sub">India's #1 Platform</div>
+    </div>
+
+    <div class="hdr-live">
+      <span class="live-dot"></span>
+      <span class="live-txt">LIVE</span>
+    </div>
   </div>
+
   <div id="sections-container">
     <div id="loading-state">
       <div class="loading-spinner"></div>
@@ -479,8 +573,8 @@ function getChipClass(type){
 function buildCard(secCfg, rank, rData){
   const rm = RANK_META[rank];
   const d  = rData || {};
-  const name  = (d.name && d.name.trim()) ? d.name.trim() : DEFAULT_NAMES[rank];
-  const stat  = (d.stat && d.stat.trim()) ? d.stat.trim() : '9,999';
+  const name  = (d.name && String(d.name).trim()) ? String(d.name).trim() : DEFAULT_NAMES[rank];
+  const stat  = (d.stat && String(d.stat).trim()) ? String(d.stat).trim() : '9,999';
   const dp    = d.dp    || '';
   const frame = d.frame || '';
 
@@ -534,10 +628,16 @@ function buildSection(secCfg, secData){
 
   const row = document.createElement('div');
   row.className = 'top3-row';
+
   DISPLAY_ORDER.forEach(rank => {
-    const rData = secData && secData.ranks ? secData.ranks[rank] : null;
+    // ✅ FIX: Try both number key and string key to support any JSON format
+    let rData = null;
+    if(secData && secData.ranks){
+      rData = secData.ranks[rank] || secData.ranks[String(rank)] || null;
+    }
     row.appendChild(buildCard(secCfg, rank, rData));
   });
+
   block.appendChild(row);
 
   const divEl = document.createElement('div');
@@ -566,7 +666,7 @@ function applyLogo(src){
   const il = document.getElementById('intro-logo-inner');
   if(il) il.innerHTML = `<img src="${src}" alt="logo" onerror="this.outerHTML='<div class=logo-fallback-txt>RIZZ<br>LIVE</div>'">`;
   const hl = document.getElementById('hdr-logo-wrap');
-  if(hl) hl.innerHTML = `<img src="${src}" alt="logo" onerror="this.outerHTML='<div class=hdr-logo-fallback>RIZZ<br>LIVE</div>'">`;
+  if(hl) hl.innerHTML = `<img src="${src}" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.outerHTML='<div class=hdr-logo-fallback>RIZZ<br>LIVE</div>'">`;
 }
 
 // LOAD DATA
