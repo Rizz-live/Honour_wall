@@ -126,6 +126,13 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
   color:#00e5ff;font-size:10px;font-weight:700;padding:4px 10px;margin-top:6px;
 }
 
+/* PNG BADGE */
+.png-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:#ffd70015;border:1px solid #ffd70040;border-radius:8px;
+  color:#ffd700;font-size:10px;font-weight:700;padding:4px 10px;margin-top:4px;
+}
+
 /* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
   background:#ff6b35;color:#fff;padding:10px 24px;border-radius:20px;
@@ -208,7 +215,7 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
     </div>
 
     <div class="admin-notice">
-      ℹ️ <strong>Auto-Compress ON:</strong> Saari images automatically compress hoti hain (200×200px, 70% quality) — JSON file chhoti rahegi.<br>
+      ℹ️ <strong>Auto-Compress ON:</strong> DP images compress hoti hain (220×220px, 70% quality JPEG). <strong>Frame images PNG mein rahegi</strong> — transparency preserve hogi!<br>
       📋 <strong>Flow:</strong> Data bharo → <strong>SAVE</strong> → <strong>EXPORT JSON</strong> → <code>rizz-data.json</code> GitHub mein upload karo.
     </div>
 
@@ -221,7 +228,7 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
       <div>
         <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">App Logo</div>
         <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Intro aur header mein dikhega</div>
-        <div class="compress-badge">⚡ Auto-compress: 200×200, 80% quality</div><br>
+        <div class="compress-badge">⚡ Auto-compress: 300×300, 82% JPEG</div><br>
         <label class="logo-change-btn btn-sm btn-export" style="cursor:pointer;display:inline-block;padding:7px 16px;margin-top:6px">
           📁 Logo Upload Karo
           <input type="file" accept="image/*" onchange="handleLogoUpload(this)">
@@ -294,10 +301,11 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;min
 const ADMIN_PASS = 'rizz2024';
 
 // Image compression settings
-const IMG_MAX_SIZE  = 220;   // px — DP & logo max dimension
-const IMG_QUALITY   = 0.70;  // 70% JPEG quality
-const FRAME_MAX     = 300;   // px — frame images slightly bigger
-const FRAME_QUALITY = 0.75;
+const IMG_MAX_SIZE  = 220;   // px — DP max dimension (JPEG)
+const IMG_QUALITY   = 0.70;  // 70% JPEG quality for DP
+const FRAME_MAX     = 300;   // px — frame max dimension (PNG preserved)
+const LOGO_MAX      = 300;   // px — logo max dimension
+const LOGO_QUALITY  = 0.82;  // logo JPEG quality
 
 const SECTIONS = [
   { key:'agency',     emoji:'🏆', title:'Top 3 Agency',          week:'Week 1st',               statLabel:'Ruby Target',    statType:'ruby' },
@@ -312,9 +320,9 @@ const RANKS = [1,2,3];
 const RANK_LABEL = {1:'🥇 GOLD',2:'🥈 SILVER',3:'🥉 BRONZE'};
 
 // ══════════════════════════════════════════════════
-//  IMAGE COMPRESSION
+//  IMAGE COMPRESSION — FORMAT AWARE ✅ FIXED
 // ══════════════════════════════════════════════════
-function compressImage(file, maxPx, quality){
+function compressImage(file, maxPx, quality, forcePNG){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = reject;
@@ -328,8 +336,23 @@ function compressImage(file, maxPx, quality){
         else      { if(h > maxPx){ w = Math.round(w*maxPx/h); h = maxPx; } }
         canvas.width = w; canvas.height = h;
         const ctx = canvas.getContext('2d');
+
+        // ✅ PNG/WebP = transparent background rakho
+        // ✅ JPEG = black background fill (banding avoid)
+        const isTransparent = forcePNG ||
+          (file && (file.type === 'image/png' || file.type === 'image/webp'));
+
+        if(!isTransparent){
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, w, h);
+        }
         ctx.drawImage(img, 0, 0, w, h);
-        const compressed = canvas.toDataURL('image/jpeg', quality);
+
+        // ✅ Transparent format ke liye PNG output, baaki JPEG
+        const compressed = isTransparent
+          ? canvas.toDataURL('image/png')
+          : canvas.toDataURL('image/jpeg', quality);
+
         resolve(compressed);
       };
       img.src = e.target.result;
@@ -341,6 +364,10 @@ function compressImage(file, maxPx, quality){
 function b64SizeKB(b64str){
   if(!b64str) return 0;
   return Math.round((b64str.length * 3/4) / 1024);
+}
+
+function isPNG(b64str){
+  return b64str && b64str.startsWith('data:image/png');
 }
 
 // ══════════════════════════════════════════════════
@@ -378,7 +405,7 @@ function getJSONString(){ return JSON.stringify(state, null, 2); }
 function updateSizeMeter(){
   const bytes = new Blob([getJSONString()]).size;
   const mb = bytes / 1024 / 1024;
-  const maxMb = 24; // keep buffer below 25MB GitHub limit
+  const maxMb = 24;
   const pct = Math.min(100, (mb / maxMb) * 100);
 
   const fill  = document.getElementById('size-fill');
@@ -423,7 +450,7 @@ async function handleLogoUpload(inp){
   const file = inp.files[0]; if(!file) return;
   showProgress('Logo compress ho raha hai...', 30);
   try {
-    const compressed = await compressImage(file, 300, 0.82);
+    const compressed = await compressImage(file, LOGO_MAX, LOGO_QUALITY, false);
     state.logo = compressed;
     const prev = document.getElementById('logo-preview');
     const ph   = document.getElementById('logo-placeholder');
@@ -477,29 +504,37 @@ function renderSections(){
     const d = secData.ranks?.[r] || { name:'', stat:'', dp:'', frame:'' };
     const dpKB    = d.dp    ? b64SizeKB(d.dp)    : 0;
     const frameKB = d.frame ? b64SizeKB(d.frame) : 0;
+    const frameFormat = d.frame ? (isPNG(d.frame) ? '🟡 PNG (transparent)' : '🔵 JPEG') : '';
 
     rb.innerHTML = `
       <div class="rank-block-title ${labelCls}">${RANK_LABEL[r]}</div>
 
+      <!-- DP UPLOAD (JPEG compress) -->
       <div class="upload-zone" title="DP Upload">
         <input type="file" accept="image/*" onchange="handleDP(this,'${sec.key}',${r})">
-        <img class="upload-zone-preview" id="dp_prev_${sec.key}_${r}" src="${d.dp||''}">
+        <img class="upload-zone-preview" id="dp_prev_${sec.key}_${r}"
+          src="${d.dp||''}" ${d.dp?'style="display:block"':''}>
         <div id="dp_icon_${sec.key}_${r}" ${d.dp?'style="display:none"':''}>
           <div class="upload-zone-icon">👤</div>
-          <div class="upload-zone-label">DP Upload (auto-compress)</div>
+          <div class="upload-zone-label">DP Upload (JPEG compress)</div>
         </div>
         <div class="img-size-tag" id="dp_size_${sec.key}_${r}">${d.dp?'✅ '+dpKB+' KB':''}</div>
       </div>
       ${d.dp ? `<button class="clear-btn" onclick="clearDP('${sec.key}',${r})">✕ DP Remove</button>` : ''}
 
-      <div class="frame-zone" title="Avatar Frame">
+      <!-- FRAME UPLOAD (PNG preserved ✅) -->
+      <div style="margin-bottom:4px">
+        <div class="png-badge">🖼 Frame = PNG Preserved (Transparent)</div>
+      </div>
+      <div class="frame-zone" title="Avatar Frame — PNG Transparent">
         <input type="file" accept="image/*" onchange="handleFrame(this,'${sec.key}',${r})">
-        <img class="frame-zone-preview" id="fr_prev_${sec.key}_${r}" src="${d.frame||''}">
+        <img class="frame-zone-preview" id="fr_prev_${sec.key}_${r}"
+          src="${d.frame||''}" ${d.frame?'style="display:block"':''}>
         <div id="fr_icon_${sec.key}_${r}" ${d.frame?'style="display:none"':''}>
           <div class="upload-zone-icon">🖼</div>
-          <div class="upload-zone-label" style="color:var(--cyan)">Avatar Frame (optional)</div>
+          <div class="upload-zone-label" style="color:var(--cyan)">Avatar Frame — PNG transparent</div>
         </div>
-        <div class="img-size-tag" id="fr_size_${sec.key}_${r}">${d.frame?'✅ '+frameKB+' KB':''}</div>
+        <div class="img-size-tag" id="fr_size_${sec.key}_${r}">${d.frame?'✅ '+frameKB+' KB — '+frameFormat:''}</div>
       </div>
       ${d.frame ? `<button class="clear-btn" onclick="clearFrame('${sec.key}',${r})" style="margin-top:4px">✕ Frame Remove</button>` : ''}
 
@@ -514,16 +549,6 @@ function renderSections(){
         placeholder="${sec.statType==='clock'?'e.g. 120 hrs':'e.g. 1,23,456'}">`;
 
     grid.appendChild(rb);
-
-    // Show previews
-    if(d.dp){
-      const p = document.getElementById('dp_prev_'+sec.key+'_'+r);
-      if(p) p.style.display='block';
-    }
-    if(d.frame){
-      const p = document.getElementById('fr_prev_'+sec.key+'_'+r);
-      if(p) p.style.display='block';
-    }
   });
 }
 
@@ -535,11 +560,12 @@ function ensureRank(key, r){
   if(!state.sections[key].ranks[r]) state.sections[key].ranks[r]={name:'',stat:'',dp:'',frame:''};
 }
 
+// DP — always JPEG compress
 async function handleDP(inp, key, r){
   const file = inp.files[0]; if(!file) return;
   showProgress('DP compress ho rahi hai...', 40);
   try {
-    const compressed = await compressImage(file, IMG_MAX_SIZE, IMG_QUALITY);
+    const compressed = await compressImage(file, IMG_MAX_SIZE, IMG_QUALITY, false);
     ensureRank(key, r);
     state.sections[key].ranks[r].dp = compressed;
     const prev = document.getElementById('dp_prev_'+key+'_'+r);
@@ -547,17 +573,19 @@ async function handleDP(inp, key, r){
     const sizeTag = document.getElementById('dp_size_'+key+'_'+r);
     if(prev){ prev.src=compressed; prev.style.display='block'; }
     if(icon) icon.style.display='none';
-    if(sizeTag) sizeTag.textContent = '✅ ' + b64SizeKB(compressed) + ' KB (compressed)';
+    if(sizeTag) sizeTag.textContent = '✅ ' + b64SizeKB(compressed) + ' KB (JPEG compressed)';
     saveState(); updateSizeMeter(); hideProgress();
-    showToast('DP uploaded & compressed! (' + b64SizeKB(compressed) + ' KB)');
+    showToast('DP uploaded! (' + b64SizeKB(compressed) + ' KB)');
   } catch(e){ hideProgress(); showToast('❌ DP error'); }
 }
 
+// Frame — PNG preserve karo ✅ FIXED
 async function handleFrame(inp, key, r){
   const file = inp.files[0]; if(!file) return;
-  showProgress('Frame compress ho raha hai...', 40);
+  showProgress('Frame upload ho raha hai...', 40);
   try {
-    const compressed = await compressImage(file, FRAME_MAX, FRAME_QUALITY);
+    // forcePNG=true — transparency bilkul preserve hogi
+    const compressed = await compressImage(file, FRAME_MAX, 1.0, true);
     ensureRank(key, r);
     state.sections[key].ranks[r].frame = compressed;
     const prev = document.getElementById('fr_prev_'+key+'_'+r);
@@ -565,9 +593,10 @@ async function handleFrame(inp, key, r){
     const sizeTag = document.getElementById('fr_size_'+key+'_'+r);
     if(prev){ prev.src=compressed; prev.style.display='block'; }
     if(icon) icon.style.display='none';
-    if(sizeTag) sizeTag.textContent = '✅ ' + b64SizeKB(compressed) + ' KB (compressed)';
+    const kb = b64SizeKB(compressed);
+    if(sizeTag) sizeTag.textContent = '✅ ' + kb + ' KB — 🟡 PNG (transparent preserved)';
     saveState(); updateSizeMeter(); hideProgress();
-    showToast('Frame uploaded! (' + b64SizeKB(compressed) + ' KB)');
+    showToast('Frame uploaded! PNG transparent ✅ (' + kb + ' KB)');
   } catch(e){ hideProgress(); showToast('❌ Frame error'); }
 }
 
@@ -642,30 +671,29 @@ async function handleImport(inp){
 
     if(!parsed.sections) throw new Error('Invalid JSON format — sections missing');
 
-    // Re-compress all images in imported JSON
+    // Re-process images: DP = JPEG compress, Frame = PNG re-resize
     let processed = 0;
     const allImgs = [];
     for(const secKey of Object.keys(parsed.sections || {})){
       for(const r of [1,2,3]){
         const rdata = parsed.sections[secKey]?.ranks?.[r];
-        if(rdata?.dp)    allImgs.push({obj:rdata, field:'dp',    maxPx:IMG_MAX_SIZE, q:IMG_QUALITY});
-        if(rdata?.frame) allImgs.push({obj:rdata, field:'frame', maxPx:FRAME_MAX,    q:FRAME_QUALITY});
+        if(rdata?.dp)    allImgs.push({obj:rdata, field:'dp',    maxPx:IMG_MAX_SIZE, q:IMG_QUALITY,  forcePNG:false});
+        if(rdata?.frame) allImgs.push({obj:rdata, field:'frame', maxPx:FRAME_MAX,    q:1.0,          forcePNG:true});
       }
     }
-    if(parsed.logo) allImgs.push({obj:parsed, field:'logo', maxPx:300, q:0.82});
+    if(parsed.logo) allImgs.push({obj:parsed, field:'logo', maxPx:LOGO_MAX, q:LOGO_QUALITY, forcePNG:false});
 
     const total = allImgs.length;
     for(const item of allImgs){
       const orig = item.obj[item.field];
       if(orig && orig.startsWith('data:')){
         try {
-          // Compress via canvas
-          const recompressed = await recompressBase64(orig, item.maxPx, item.q);
+          const recompressed = await recompressBase64(orig, item.maxPx, item.q, item.forcePNG);
           item.obj[item.field] = recompressed;
-        } catch(e){ /* keep original if recompress fails */ }
+        } catch(e){ /* keep original */ }
       }
       processed++;
-      updateProgress('Images compress ho rahi hain... (' + processed + '/' + total + ')', Math.round(50 + (processed/total)*45));
+      updateProgress('Images process ho rahi hain... (' + processed + '/' + total + ')', Math.round(50 + (processed/total)*45));
     }
 
     state = parsed;
@@ -674,7 +702,6 @@ async function handleImport(inp){
     closeImport();
     renderTabs(); renderSections();
 
-    // Update logo preview
     if(state.logo){
       const p = document.getElementById('logo-preview');
       const ph = document.getElementById('logo-placeholder');
@@ -684,7 +711,7 @@ async function handleImport(inp){
 
     const mb = (new Blob([getJSONString()]).size/1024/1024).toFixed(1);
     showToast('✅ Import done! Size: ' + mb + ' MB');
-    status.textContent = '✅ Import successful! ' + total + ' images re-compressed.';
+    status.textContent = '✅ Import successful! ' + total + ' images processed.';
 
   } catch(e){
     hideProgress();
@@ -693,8 +720,8 @@ async function handleImport(inp){
   }
 }
 
-// Recompress base64 image via canvas
-function recompressBase64(b64, maxPx, quality){
+// Recompress base64 — format aware ✅
+function recompressBase64(b64, maxPx, quality, forcePNG){
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onerror = reject;
@@ -704,8 +731,19 @@ function recompressBase64(b64, maxPx, quality){
       if(w>h){ if(w>maxPx){ h=Math.round(h*maxPx/w); w=maxPx; } }
       else    { if(h>maxPx){ w=Math.round(w*maxPx/h); h=maxPx; } }
       canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      resolve(canvas.toDataURL('image/jpeg', quality));
+      const ctx = canvas.getContext('2d');
+
+      const isTransparent = forcePNG || b64.startsWith('data:image/png') || b64.startsWith('data:image/webp');
+      if(!isTransparent){
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+      }
+      ctx.drawImage(img, 0, 0, w, h);
+
+      const out = isTransparent
+        ? canvas.toDataURL('image/png')
+        : canvas.toDataURL('image/jpeg', quality);
+      resolve(out);
     };
     img.src = b64;
   });
