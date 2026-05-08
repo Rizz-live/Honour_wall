@@ -377,8 +377,8 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
     <div class="intro-logo-wrap">
       <div class="intro-logo-ring">
         <div class="intro-logo-inner" id="intro-logo-inner">
-          <img id="intro-logo-img" src="./images/app_logo.png" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none';document.getElementById('intro-logo-fallback').style.display='flex'">
-          <div id="intro-logo-fallback" class="logo-fallback-txt" style="display:none">RIZZ<br>LIVE</div>
+          <img id="intro-logo-img" src="" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" onerror="this.style.display='none';document.getElementById('intro-logo-fallback').style.display='flex'">
+          <div id="intro-logo-fallback" class="logo-fallback-txt" style="display:flex">RIZZ<br>LIVE</div>
         </div>
       </div>
       <div class="orbit-particle"></div>
@@ -401,8 +401,8 @@ body{font-family:'Rajdhani',sans-serif;color:var(--text)}
   <div class="page-header">
     <div class="hdr-left">
       <div class="hdr-logo-wrap" id="hdr-logo-wrap">
-        <img id="hdr-logo-img" src="./images/app_logo.png" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none';document.getElementById('hdr-logo-fallback').style.display='block'">
-        <div id="hdr-logo-fallback" class="hdr-logo-fallback" style="display:none">RIZZ<br>LIVE</div>
+        <img id="hdr-logo-img" src="" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" onerror="this.style.display='none';document.getElementById('hdr-logo-fallback').style.display='block'">
+        <div id="hdr-logo-fallback" class="hdr-logo-fallback" style="display:block">RIZZ<br>LIVE</div>
       </div>
       <div class="hdr-text-group">
         <div class="hdr-brand">RIZZ LIVE</div>
@@ -640,19 +640,23 @@ function renderSections(data){
 // LOGO
 function applyLogo(src){
   if(!src) return;
+
   // Intro logo
   const iImg = document.getElementById('intro-logo-img');
-  if(iImg){ iImg.src = src; }
-  else {
-    const il = document.getElementById('intro-logo-inner');
-    if(il) il.innerHTML = `<img src="${src}" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'">`;
+  const iFb  = document.getElementById('intro-logo-fallback');
+  if(iImg){
+    iImg.onload  = () => { iImg.style.display='block'; if(iFb) iFb.style.display='none'; };
+    iImg.onerror = () => { iImg.style.display='none';  if(iFb) iFb.style.display='flex'; };
+    iImg.src = src;
   }
+
   // Header logo
   const hImg = document.getElementById('hdr-logo-img');
-  if(hImg){ hImg.src = src; }
-  else {
-    const hl = document.getElementById('hdr-logo-wrap');
-    if(hl) hl.innerHTML = `<img src="${src}" alt="logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'">`;
+  const hFb  = document.getElementById('hdr-logo-fallback');
+  if(hImg){
+    hImg.onload  = () => { hImg.style.display='block'; if(hFb) hFb.style.display='none'; };
+    hImg.onerror = () => { hImg.style.display='none';  if(hFb) hFb.style.display='block'; };
+    hImg.src = src;
   }
 }
 
